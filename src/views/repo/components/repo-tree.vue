@@ -1,0 +1,41 @@
+<template>
+  <div class="repo-tree">
+    <template v-for="i in data" >
+      <RepoTreeItem :key="i.id" :item="i" :deep="0"/>
+    </template>
+  </div>
+</template>
+
+<script>
+import * as userService from '@/services/userService';
+import RepoTreeItem from './repo-tree-item.vue';
+
+export default {
+  name: 'RepoTree',
+  components: { RepoTreeItem },
+  data() {
+    return {
+      loading: true,
+      open: false,
+      data: [],
+    };
+  },
+  computed: {},
+  methods: {},
+  beforeMount() {
+    userService.getRepoTree(this.$route.params.id).then(({ data }) => {
+      this.loading = false;
+      this.data = data;
+    });
+  },
+};
+</script>
+<style lang="scss" scoped>
+.repo-tree {
+  padding: 20px 0;
+  flex-grow: 1;
+  min-height: 1px;
+  width: 250px;
+  overflow: auto;
+}
+</style>

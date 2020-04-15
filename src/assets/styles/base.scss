@@ -1,0 +1,74 @@
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: var(--color-background-hover);
+}
+/*webkit内核*/
+.scroll_hide::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+.scroll_hide::-webkit-scrollbar-button {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-webkit-scrollbar-corner {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-webkit-scrollbar-resizer {
+  background-color: rgba(0, 0, 0, 0);
+}
+/*o内核*/
+.scroll_hide .-o-scrollbar {
+  -moz-appearance: none !important;
+  background: rgba(0, 255, 0, 0) !important;
+}
+.scroll_hide::-o-scrollbar-button {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-o-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-o-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-o-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-o-scrollbar-corner {
+  background-color: rgba(0, 0, 0, 0);
+}
+.scroll_hide::-o-scrollbar-resizer {
+  background-color: rgba(0, 0, 0, 0);
+}
+/*IE10,IE11,IE12*/
+.scroll_hide {
+  -ms-scroll-chaining: chained;
+  -ms-overflow-style: none;
+  -ms-content-zooming: zoom;
+  -ms-scroll-rails: none;
+  -ms-content-zoom-limit-min: 100%;
+  -ms-content-zoom-limit-max: 500%;
+  -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+  -ms-overflow-style: none;
+  overflow: auto;
+}
