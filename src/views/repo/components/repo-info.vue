@@ -1,23 +1,24 @@
 <template>
   <div class="repo-info">
-    <div class="mb5">
-      <sui-button
+    <div class="mb-10">
+      <vue-button
+        small
+        class="icon-button round mr-10"
         @click="$router.push({ name: 'repoList' })"
-        circular
-        icon="angle left"
-        size="small"
-        color="black"
+        iconLeft="chevron_left"
       />
       <span class="title">{{ data.name }}</span>
     </div>
-    <sui-label color="black" size="mini" basic><sui-icon name="random" shield alternate/>{{ data.default_branch }}</sui-label>
-     <sui-button
+    <vue-tag>
+      <vue-tag-item>
+        <vue-icon icon="call_split"/>{{ data.default_branch }}
+      </vue-tag-item>
+    </vue-tag>
+     <vue-button
        @click="handleToGit"
-        circular
-        icon="gitlab"
-        size="mini"
-        class="r"
-        color="orange"
+        iconLeft="class"
+        small
+        class="icon-button r warning round"
       />
   </div>
 </template>
@@ -54,7 +55,8 @@ export default {
   box-shadow: 0 8px 16px 0 rgba(36, 46, 66, 0.2);
   .title {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
+    vertical-align: middle;
   }
 }
 </style>

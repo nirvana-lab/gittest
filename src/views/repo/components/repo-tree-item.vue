@@ -1,23 +1,14 @@
 <template>
   <div>
-    <div
-      :style="`padding-left: ${deep * 10}px`"
-      class="repo-tree-item"
-      @click="handleClick(item)"
-    >
-      <sui-icon
-        color="grey"
-        :name="item.type === 'tree' ? (open ? 'caret down' : 'caret right') : ''"
-      /><sui-icon
-        :color="item.type === 'tree'?'black':'grey'"
-      :name="item.type === 'tree' ? (open ? 'folder outline' : 'folder') : 'file alternate'" />{{
-        item.name
-      }}
+    <div :style="`padding-left: ${deep * 10}px`" class="repo-tree-item" @click="handleClick(item)">
+      <vue-icon :icon="item.type === 'tree' ? (open ? 'expand_more' : 'chevron_right') : ''" />
+      <vue-icon
+        class="mr-5"
+        :icon="item.type === 'tree' ? (open ? 'folder_open' : 'folder') : 'description'"
+      />{{ item.name }}
     </div>
     <template v-if="open">
-      <div class="pt5" v-if="loading && !data.length">
-        <sui-loader active size="mini" centered inline />
-      </div>
+      <vue-loading class="pt-5" v-if="loading && !data.length"/>
       <RepoTreeItem v-for="i in data" :item="i" :key="i.id" :deep="deep + 1" />
     </template>
   </div>
@@ -54,7 +45,9 @@ export default {
           this.loading = false;
         });
       } else {
-        userService.getRepoTreeFile(this.$route.params.id, encodeURIComponent(i.path), 'master').then(() => {});
+        userService
+          .getRepoTreeFile(this.$route.params.id, encodeURIComponent(i.path), 'master')
+          .then(() => {});
       }
     },
   },
@@ -66,6 +59,7 @@ export default {
   padding: 5px 2px;
   user-select: none;
   border-radius: 4px;
+  font-weight: 500;
   &:hover {
     background-color: rgba(193, 201, 209, 0.53);
   }

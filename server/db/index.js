@@ -23,7 +23,7 @@ const sequelize = new Sequelize('nirvana', db.user, db.password, {
 sequelize
   .sync()
   .then(() => {
-    logger.info('init db ok');
+    logger.info('Init db success');
   })
   .catch((err) => {
     logger.error(err);

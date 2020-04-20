@@ -1,15 +1,17 @@
 {
-  "name": "gittest",
+  "name": "Gittest",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "npm run build:client && npm run build:server",
     "lint": "vue-cli-service lint",
-    "server:run": "PORT=8081 GIT=https://gitlab.com DB_USER=postgres DB_PASSWORD=123456 DB_HOST=10.8.0.226 DB_PORT=5432 node server/server",
-    "server:build": "webpack -p --config scripts/webpack.server.js --display errors-only"
+    "dev:client": "PROXY=http://localhost:3000 vue-cli-service serve",
+    "dev:server": "PORT=3000 GIT=https://gitlab.com DB_USER=postgres DB_PASSWORD=123456 DB_HOST=127.0.0.1 DB_PORT=5432 nodemon -w ./server -e js,yaml server/server.js",
+    "build:client": "vue-cli-service build",
+    "build:server": "webpack -p --config scripts/webpack.server.js --display errors-only"
   },
   "dependencies": {
+    "slime": "0.1.0",
     "axios": "^0.19.2",
     "cookie": "^0.4.0",
     "core-js": "^3.6.4",
@@ -25,8 +27,6 @@
     "koa-static": "^5.0.0",
     "pg": "^8.0.2",
     "pg-hstore": "^2.3.3",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-vue": "^0.10.1",
     "sequelize": "^5.21.5",
     "swagger-ui": "^3.25.0",
     "vue": "^2.6.11",
@@ -47,6 +47,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2",
+    "nodemon": "^2.0.3",
     "sass": "^1.26.3",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"

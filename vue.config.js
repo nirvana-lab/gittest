@@ -2,10 +2,14 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8081/',
+        target: process.env.PROXY || 'http://127.0.0.1:3000/',
         changeOrigin: true,
       },
     },
+  },
+  chainWebpack: (config) => {
+    config.resolve.alias
+      .set('vue$', 'vue/dist/vue.esm.js');
   },
   // chainWebpack: (config) => {
   //   const svgRule = config.module.rule('svg');

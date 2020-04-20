@@ -1,10 +1,13 @@
 import Vue from 'vue';
-import SuiVue from 'semantic-ui-vue';
-import 'semantic-ui-css/semantic.min.css';
+// import SuiVue from 'semantic-ui-vue';
+// import 'semantic-ui-css/semantic.min.css';
 import '@/assets/styles/lib.scss';
+import '@/assets/styles/grid.scss';
 import dayjs from 'dayjs';
 import router from '@/router';
 import store from '@/store';
+import slime from 'slime';
+import 'slime/lib/slime.css';
 import App from './App.vue';
 import components from './components';
 
@@ -15,7 +18,7 @@ const dateformat = {
 };
 
 Vue.config.productionTip = false;
-Vue.use(SuiVue);
+Vue.use(slime);
 Vue.use(dateformat);
 Vue.use(components);
 new Vue({
