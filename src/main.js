@@ -1,15 +1,18 @@
 import Vue from 'vue';
-// import SuiVue from 'semantic-ui-vue';
-// import 'semantic-ui-css/semantic.min.css';
+import '@/assets/styles/base.scss';
 import '@/assets/styles/lib.scss';
 import '@/assets/styles/grid.scss';
+import '@/assets/styles/swagger.css';
+import 'slime/lib/slime.css';
 import dayjs from 'dayjs';
 import router from '@/router';
 import store from '@/store';
 import slime from 'slime';
-import 'slime/lib/slime.css';
+import codemirror from './components/codemirror';
 import App from './App.vue';
 import components from './components';
+
+Vue.use(codemirror);
 
 window.moment = dayjs;
 

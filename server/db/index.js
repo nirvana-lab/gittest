@@ -3,12 +3,13 @@ const { logger } = require('../middlewares/logger');
 
 
 const db = {
+  name: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
 };
-const sequelize = new Sequelize('nirvana', db.user, db.password, {
+const sequelize = new Sequelize(db.name, db.user, db.password, {
   host: db.host, // 地址
   port: db.port, // 端口
   dialect: 'postgres', // 数据库类型

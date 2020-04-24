@@ -24,7 +24,10 @@ const getRepos = async (ctx) => {
 const postRepo = async (ctx) => {
   const headers = { authorization: `Bearer ${ctx.cookies.get('token')}` };
   const { data: user } = await getUser(headers);
-  await Repo.create({ user: user.id, repo: ctx.request.body.id });
+  const repos = await Repo.findAll({ user: user.id, repo: ctx.request.body.id });
+  if (!repos.length) {
+    await Repo.create({ user: user.id, repo: ctx.request.body.id });
+  }
 };
 
 const deleteRepo = async (ctx) => {

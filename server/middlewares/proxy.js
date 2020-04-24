@@ -15,6 +15,21 @@ const config = {
     },
   },
 };
+const configNv = {
+  target: process.env.TEST,
+  changeOrigin: true,
+  logs: true,
+  rewrite: (path) => path.replace('/api/nv', '/api'),
+  events: {
+    proxyReq: (proxyReq, req) => {
+      if (req.headers.cookie) {
+        const { token } = cookie.parse(req.headers.cookie);
+        proxyReq.setHeader('authorization', `Bearer ${token}`);
+      }
+    },
+  },
+};
 module.exports = [
   proxy('/api/git', config),
+  proxy('/api/nv', configNv),
 ];

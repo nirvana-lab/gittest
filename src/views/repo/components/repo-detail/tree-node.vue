@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :style="`padding-left: ${deep * 10}px`" class="repo-tree-item" @click="handleClick(item)">
+    <div :style="`padding-left: ${deep * 10}px`" class="repo-tree-item ell" @click="handleClick(item)">
       <vue-icon :icon="item.type === 'tree' ? (open ? 'expand_more' : 'chevron_right') : ''" />
       <vue-icon
         class="mr-5"
@@ -45,9 +45,15 @@ export default {
           this.loading = false;
         });
       } else {
-        userService
-          .getRepoTreeFile(this.$route.params.id, encodeURIComponent(i.path), 'master')
-          .then(() => {});
+        this.$router.replace({
+          name: this.$route.name,
+          params: this.$route.params,
+          query: {
+            file: encodeURIComponent(i.path),
+            branch: this.$route.query.branch,
+          },
+        });
+        this.$store.dispatch('repo/GET_FILE', { id: this.$route.params.id, path: this.$route.query.file, branch: this.$route.query.branch });
       }
     },
   },

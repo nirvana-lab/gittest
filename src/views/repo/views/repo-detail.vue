@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import RepoTree from '../components/repo-tree.vue';
-import RepoSwagger from '../components/repo-swagger.vue';
-import RepoInfo from '../components/repo-info.vue';
+import RepoTree from '../components/repo-detail/tree.vue';
+import RepoSwagger from '../components/repo-detail/swagger.vue';
+import RepoInfo from '../components/repo-detail/info.vue';
 
 export default {
   name: 'RepoDetail',
@@ -21,6 +21,11 @@ export default {
       loading: true,
     };
   },
+  mounted() {
+    if (this.$route.query.path) {
+      this.$store.dispatch('repo/GET_FILE', { id: this.$route.params.id, path: this.$route.query.file, branch: this.$route.query.branch });
+    }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -28,9 +33,10 @@ export default {
   flex-grow: 1;
   display: flex;
   min-height: 1px;
+  padding: 10px 15px;
 }
 .repo-detail-left{
-  padding: 15px 0 0 15px;
+  width: 300px;
   display: flex;
   overflow: auto;
   flex-shrink: 0;

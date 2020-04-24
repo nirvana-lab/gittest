@@ -1,0 +1,61 @@
+<template>
+  <codemirror class="test-request" :value="value" @input="handleChange" :options="options"></codemirror>
+</template>
+<script>
+export default {
+  name: 'RepoTestRequest',
+  props: {
+    value: {
+      type: String,
+      default: '',
+    },
+  },
+  methods: {
+    handleChange(e) {
+      this.$emit('input', e);
+    },
+  },
+  data() {
+    return {
+      options: {
+        lineNumbers: true,
+        theme: 'one-dark',
+        mode: 'application/json',
+        foldGutter: true,
+        indentUnit: 2, // 缩进单位，默认2
+        smartIndent: true, // 是否智能缩进
+        matchBrackets: true,
+        gutters: ['CodeMirror-foldgutter'],
+        lint: true,
+        extraKeys: {
+          Tab: (cm) => {
+            if (cm.somethingSelected()) { // 存在文本选择
+              cm.indentSelection('add'); // 正向缩进文本
+            } else { // 无文本选择
+              // cm.indentLine(cm.getCursor().line, "add");  // 整行缩进 不符合预期
+              cm.replaceSelection(Array(cm.getOption('indentUnit') + 1).join(' '), 'end', '+input'); // 光标处插入 indentUnit 个空格
+            }
+          },
+          'Shift-Tab': (cm) => { // 反向缩进
+            if (cm.somethingSelected()) {
+              cm.indentSelection('subtract'); // 反向缩进
+            } else {
+              // cm.indentLine(cm.getCursor().line, "subtract");  // 直接缩进整行
+              const cursor = cm.getCursor();
+              cm.setCursor({ line: cursor.line, ch: cursor.ch - 4 }); // 光标回退 indexUnit 字符
+            }
+          },
+        },
+      },
+    };
+  },
+};
+</script>
+<style lang="scss" scoped>
+.test-request{
+  // margin-right: 20px;
+  min-height: 100px;
+  border-radius: 4px;
+  background-color: #282c34;
+}
+</style>

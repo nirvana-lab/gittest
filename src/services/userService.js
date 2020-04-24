@@ -14,4 +14,4 @@ export const getRepoTree = (id) => axios.get(`/api/git/v4/projects/${id}/reposit
 
 export const getRepoTreePath = (id, path) => axios.get(`/api/git/v4/projects/${id}/repository/tree?path=${path}`);
 
-export const getRepoTreeFile = (id, path, ref) => axios.get(`/api/git/v4/projects/${id}/repository/files/${path}/blame?ref=${ref}`);
+export const getRepoTreeFile = (id, path, ref) => axios.get(`/api/git/v4/projects/${id}/repository/files/${path}/raw?ref=${ref}`);

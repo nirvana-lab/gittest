@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import RepoList from '@/views/repo/views/repo-list.vue';
 import RepoDetail from '@/views/repo/views/repo-detail.vue';
+import RepoTest from '@/views/repo/views/repo-test.vue';
 
 const index = Vue.extend({
   template: '<router-view/>',
@@ -11,14 +12,19 @@ export default {
   component: index,
   children: [
     {
-      path: '',
-      name: 'repoList',
-      component: RepoList,
+      path: ':id/tests',
+      name: 'RepoTest',
+      component: RepoTest,
     },
     {
       path: ':id',
       name: 'repoDetail',
       component: RepoDetail,
+    },
+    {
+      path: '',
+      name: 'repoList',
+      component: RepoList,
     },
   ],
 };

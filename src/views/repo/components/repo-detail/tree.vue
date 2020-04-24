@@ -1,18 +1,18 @@
 <template>
   <div class="repo-tree">
     <template v-for="i in data" >
-      <RepoTreeItem :key="i.id" :item="i" :deep="0"/>
+      <TreeNode :key="i.id" :item="i" :deep="0"/>
     </template>
   </div>
 </template>
 
 <script>
 import * as userService from '@/services/userService';
-import RepoTreeItem from './repo-tree-item.vue';
+import TreeNode from './tree-node.vue';
 
 export default {
   name: 'RepoTree',
-  components: { RepoTreeItem },
+  components: { TreeNode },
   data() {
     return {
       loading: true,
@@ -32,7 +32,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .repo-tree {
-  padding: 20px 0;
+  padding: 15px 0;
   flex-grow: 1;
   min-height: 1px;
   width: 250px;

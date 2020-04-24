@@ -3,13 +3,13 @@
     <div class="mb-10">
       <vue-button
         small
-        class="icon-button round mr-10"
+        class="icon-button round mr-10 white"
         @click="$router.push({ name: 'repoList' })"
         iconLeft="chevron_left"
       />
       <span class="title">{{ data.name }}</span>
     </div>
-    <vue-tag>
+    <vue-tag small>
       <vue-tag-item>
         <vue-icon icon="call_split"/>{{ data.default_branch }}
       </vue-tag-item>
@@ -52,7 +52,7 @@ export default {
   border-radius: 4px;
   background-color: #1b1c1d;
   color: #fff;
-  box-shadow: 0 8px 16px 0 rgba(36, 46, 66, 0.2);
+  box-shadow: 0 4px 8px 0 rgba(36,46,66,.06);
   .title {
     font-size: 16px;
     font-weight: 500;
