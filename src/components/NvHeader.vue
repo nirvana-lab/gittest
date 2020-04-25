@@ -17,9 +17,9 @@
         <span class="main-header-logo">GitTest</span>
       </div>
       <div class="space"></div>
-      <VueAvatar v-if="user.avatar_url" :src="user.avatar_url"/>
+      <VueAvatar class="mr-5" v-if="user.avatar_url" :src="user.avatar_url"/>
       <VueDropdown :label="user.name" buttonClass="flat" icon-right="keyboard_arrow_down">
-        <VueDropdownButton icon-left="edit">Sign Out</VueDropdownButton>
+        <VueDropdownButton>登出</VueDropdownButton>
       </VueDropdown>
     </div>
   </header>

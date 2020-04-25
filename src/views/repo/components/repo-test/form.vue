@@ -8,29 +8,31 @@
         {{ $route.query.path }}
       </span>
     </div>
-    <div class="clear mb-25">
-      <vue-input type="text" class="flat" placeholder="用例名称"/>
-      <vue-input type="text" class="flat" placeholder="描述信息"/>
-      <vue-button class="r">保存</vue-button>
+    <div class="clear mb-10">
+      <vue-input type="text" v-model="name" class="flat" placeholder="用例名称"/>
+      <vue-input type="text" v-model="description" class="flat" placeholder="描述信息"/>
+      <vue-button class="r" @click="handleCreate">保存</vue-button>
     </div>
-    <div class="mb-15 sm">{{ description }}</div>
     <div v-for="(properties, key) in parameters" :key="key">
-      <AutoList :title="key" v-model="parameters[key]" />
+      <Params :title="key" v-model="parameters[key]" />
     </div>
     <div class="repo-test-form-table-title">
       <span class="name mr-5">BODY</span>
     </div>
     <Request v-model="body"/>
-    <AutoList title="RESPONSE" v-model="response" />
+    <Response title="RESPONSE" v-model="response"/>
   </div>
 </template>
 <script>
+import * as testService from '@/services/testService';
+import Params from './params.vue';
 import Request from './request.vue';
-import AutoList from './autolist.vue';
+import Response from './response.vue';
+
 
 export default {
-  name: 'RepoTestForm',
-  components: { Request, AutoList },
+  name: 'TestForm',
+  components: { Request, Response, Params },
   props: ['paths'],
   data() {
     return {
@@ -90,27 +92,30 @@ export default {
         })));
       });
       const resultResponse = [];
+      const { params, query } = this.$route;
       resultResponse.concat(this.response.map((i) => ({
         key: i.name,
-        type: i.type,
-        assert: i.assert,
+        key_type: i.type,
+        comparator: 'equal',
+        expect_value: i.assert,
       })));
-      console.log({
-        case: 'string',
-        description: 'string',
-        setup: [
-          'string',
-        ],
-        parameters: [
-          {},
-        ],
-        body: 'string',
-        teardown: [
-          'string',
-        ],
-        validator: [
-          {},
-        ],
+      testService.createTest({
+        params: {
+          projectId: params.id, filePath: query.file, ref: query.branch, method: query.method, path: query.path,
+        },
+        data: {
+          case: this.name,
+          description: this.description,
+          setup: [],
+          parameters: resultParameters,
+          body: this.body,
+          teardown: [],
+          validator: resultResponse,
+        },
+      }).then(() => {
+        this.$store.dispatch('test/GET_TESTS', {
+          projectId: params.id, filePath: query.file, ref: query.branch, method: query.method, path: query.path,
+        });
       });
     },
   },
@@ -148,12 +153,8 @@ export default {
   font-weight: 600;
 }
 .repo-test-form {
-  flex-grow: 1;
-  width: 100%;
-  min-height: 1px;
-  overflow: auto;
-  padding-left: 20px;
   max-width: 950px;
+  width: 100%;
   margin: 0 auto;
 }
 .repo-test-form-table-title {

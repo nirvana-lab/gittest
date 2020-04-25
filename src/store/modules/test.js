@@ -22,11 +22,12 @@ const actions = {
     projectId, filePath, ref, method, path,
   }) => testService.getTests({
     params: {
-      project_id: projectId, file_path: filePath, ref, method, path,
+      project_id: projectId, file_path: decodeURIComponent(filePath), ref, method, path,
     },
   }).then(({ data }) => {
     commit(types.SET_TESTS, data);
   }),
+
 };
 // getters
 const getters = {

@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: 'RepoTestRequest',
+  name: 'Request',
   props: {
     value: {
       type: String,

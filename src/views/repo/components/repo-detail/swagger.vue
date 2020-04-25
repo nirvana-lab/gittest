@@ -65,12 +65,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .repo-detail-swagger{
-  flex-grow: 1;
-  width: 100%;
-  min-height: 1px;
-  overflow: auto;
-  padding: 15px 10px 10px 20px;
   max-width: 950px;
+  width: 100%;
   margin: 0 auto;
 }
 </style>

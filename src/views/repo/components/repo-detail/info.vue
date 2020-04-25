@@ -10,13 +10,12 @@
       <span class="title">{{ data.name }}</span>
     </div>
     <vue-tag small>
-      <vue-tag-item>
-        <vue-icon icon="call_split"/>{{ data.default_branch }}
+      <vue-tag-item>{{ data.default_branch }}
       </vue-tag-item>
     </vue-tag>
      <vue-button
        @click="handleToGit"
-        iconLeft="class"
+        iconLeft="description"
         small
         class="icon-button r warning round"
       />

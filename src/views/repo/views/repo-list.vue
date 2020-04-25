@@ -2,7 +2,7 @@
   <div class="repo-list">
     <div class="mb-20">
       <vue-button
-        class="black mr-15"
+        class="black mr-15 l"
         icon-left="add_circle"
         @click="
           getGitRepos();
@@ -12,7 +12,7 @@
       />
       <vue-input
         placeholder="请输入名称进行查看"
-        class="flat warning"
+        class="flat warning db"
         icon-left="search"
         v-model.trim="search"
       />
@@ -110,7 +110,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .repo-list {
-  max-width: 860px;
+  max-width: 950px;
   width: 100%;
   margin: 0 auto;
   padding: 10px;

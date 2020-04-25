@@ -4,7 +4,11 @@
       <RepoInfo/>
       <RepoTree/>
     </div>
-    <RepoSwagger/>
+    <div  class="repo-detail-right">
+      <NvTab/>
+<RepoSwagger/>
+    </div>
+
   </div>
 </template>
 
@@ -33,14 +37,21 @@ export default {
   flex-grow: 1;
   display: flex;
   min-height: 1px;
-  padding: 10px 15px;
 }
 .repo-detail-left{
-  width: 300px;
+  width: 315px;
   display: flex;
   overflow: auto;
   flex-shrink: 0;
   min-height: 1px;
   flex-direction: column;
+  padding: 10px 0px 10px 15px;
+}
+.repo-detail-right{
+  flex-grow: 1;
+  width: 100%;
+  min-height: 1px;
+  overflow: auto;
+  padding: 0px 15px 10px;
 }
 </style>

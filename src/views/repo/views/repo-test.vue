@@ -4,7 +4,9 @@
       <Info :paths="paths"/>
       <Cases/>
     </div>
-    <Form :paths="paths"/>
+    <div class="repo-test-right">
+      <Form :paths="paths"/>
+    </div>
   </div>
 </template>
 
@@ -95,24 +97,24 @@ export default {
 </script>
 <style lang="scss" scoped>
 .repo-test {
-  padding: 10px 15px;
   flex-grow: 1;
   display: flex;
   min-height: 1px;
 }
 .repo-test-left{
-  width: 300px;
+  width: 315px;
   display: flex;
   overflow: auto;
   flex-shrink: 0;
   min-height: 1px;
   flex-direction: column;
+  padding: 10px 0px 10px 15px;
 }
 .repo-test-right{
-  padding: 10px;
-  width: 100%;
   flex-grow: 1;
-  overflow: auto;
+  width: 100%;
   min-height: 1px;
+  overflow: auto;
+  padding: 10px 15px;
 }
 </style>

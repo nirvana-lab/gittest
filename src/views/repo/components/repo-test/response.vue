@@ -17,6 +17,13 @@
           </VueSelect>
         </td>
         <td>
+          <VueSelect :value="i.type" @update="(e) => handleUpdate(index, 'type', e)" button-class="flat">
+            <VueSelectButton value="integer" label="integer" />
+            <VueSelectButton value="string" label="string" />
+            <VueSelectButton value="boolean" label="boolean" />
+          </VueSelect>
+        </td>
+        <td>
           <vue-input class="db" type="text" :value="i.assert" @change="(e) => handleUpdate(index, 'assert', e.target.value)" />
         </td>
         <td class="tc">
@@ -28,7 +35,7 @@
 </template>
 <script>
 export default {
-  name: 'RepoTestAutoList',
+  name: 'Response',
   props: {
     title: {
       default: '',
