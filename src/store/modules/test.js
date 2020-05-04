@@ -2,6 +2,7 @@ import * as testService from '@/services/testService';
 
 const types = {
   SET_TESTS: 'SET_TESTS',
+  SET_TEST_ID: 'SET_TEST_ID',
 };
 
 // initState
@@ -22,12 +23,15 @@ const actions = {
     projectId, filePath, ref, method, path,
   }) => testService.getTests({
     params: {
-      project_id: projectId, file_path: decodeURIComponent(filePath), ref, method, path,
+      project_id: projectId, file_path: filePath, ref, method, path,
     },
   }).then(({ data }) => {
-    commit(types.SET_TESTS, data);
+    commit(types.SET_TESTS, data.data);
   }),
-
+  RUN_TEST: (id) => testService.runTest(id),
+  CLEAR_TEST: ({ commit }) => {
+    commit(types.SET_TESTS, []);
+  },
 };
 // getters
 const getters = {

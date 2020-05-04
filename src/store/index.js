@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import global from './modules/global';
 import repo from './modules/repo';
 import test from './modules/test';
+import variable from './modules/variable';
 
 Vue.use(Vuex);
 
@@ -11,5 +12,6 @@ export default new Vuex.Store({
     global,
     repo,
     test,
+    variable,
   },
 });

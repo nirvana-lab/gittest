@@ -8,7 +8,7 @@ export default {
 </script>
 <style lang="scss">
 html{
-  background-color: #eff4f9;
+  // background-color: #eff4f9;
   height: 100%;
 }
 body{

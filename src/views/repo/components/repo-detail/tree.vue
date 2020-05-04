@@ -35,7 +35,6 @@ export default {
   padding: 15px 0;
   flex-grow: 1;
   min-height: 1px;
-  width: 250px;
   overflow: auto;
 }
 </style>

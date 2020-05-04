@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :style="`padding-left: ${deep * 10}px`" class="repo-tree-item ell" @click="handleClick(item)">
+    <div :style="`padding-left: ${deep * 10}px`" class="repo-tree-item ell" :class="{'active': $route.query.file === item.path}" @click="handleClick(item)">
       <vue-icon :icon="item.type === 'tree' ? (open ? 'expand_more' : 'chevron_right') : ''" />
       <vue-icon
         class="mr-5"
@@ -35,6 +35,20 @@ export default {
       data: [],
     };
   },
+  mounted() {
+    if (this.$route.query.file) {
+      const filePath = this.$route.query.file.split('/');
+      const name = filePath.splice(0, this.deep + 1).join('/');
+      if (this.item.type === 'tree' && this.item.path === name) {
+        this.open = !this.open;
+        this.loading = true;
+        userService.getRepoTreePath(this.$route.params.id, name).then(({ data }) => {
+          this.data = data;
+          this.loading = false;
+        });
+      }
+    }
+  },
   methods: {
     handleClick(i) {
       if (i.type === 'tree') {
@@ -49,11 +63,10 @@ export default {
           name: this.$route.name,
           params: this.$route.params,
           query: {
-            file: encodeURIComponent(i.path),
-            branch: this.$route.query.branch,
+            file: i.path,
+            ref: this.$route.query.ref,
           },
         });
-        this.$store.dispatch('repo/GET_FILE', { id: this.$route.params.id, path: this.$route.query.file, branch: this.$route.query.branch });
       }
     },
   },
@@ -67,6 +80,9 @@ export default {
   border-radius: 4px;
   font-weight: 500;
   &:hover {
+    background-color: rgba(193, 201, 209, 0.53);
+  }
+  &.active {
     background-color: rgba(193, 201, 209, 0.53);
   }
 }

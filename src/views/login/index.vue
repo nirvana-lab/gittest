@@ -2,7 +2,7 @@
   <div class="login">
     <header class="login-header">GitTest</header>
     <div class="login-content">
-      <vue-button class="warning" @click="handleLogin">Login in</vue-button>
+      <vue-button class="orange" @click="handleLogin">Login in</vue-button>
     </div>
   </div>
 </template>

@@ -1,35 +1,76 @@
 <template>
   <div>
     <div class="title">
-      <span class="name mr-5">{{ title.toUpperCase() }}</span>
-      <vue-button small class="icon-button round success flat" iconLeft="add" @click="handleAdd"/>
+      <span class="name mr-5">RESPONSE</span>
+      <vue-button
+        small
+        class="icon-button round orange flat"
+        iconLeft="add_circle"
+        @click="handleAdd"
+      />
     </div>
-    <table class="table">
-      <tr v-for="(i,index) in value" :key="index">
-        <td>
-          <vue-input class="db" type="text" :value="i.name" @change="(e) => handleUpdate(index, 'name', e.target.value)"/>
-        </td>
-        <td>
-          <VueSelect :value="i.type" @update="(e) => handleUpdate(index, 'type', e)" button-class="flat">
-            <VueSelectButton value="integer" label="integer" />
-            <VueSelectButton value="string" label="string" />
-            <VueSelectButton value="boolean" label="boolean" />
-          </VueSelect>
-        </td>
-        <td>
-          <VueSelect :value="i.type" @update="(e) => handleUpdate(index, 'type', e)" button-class="flat">
-            <VueSelectButton value="integer" label="integer" />
-            <VueSelectButton value="string" label="string" />
-            <VueSelectButton value="boolean" label="boolean" />
-          </VueSelect>
-        </td>
-        <td>
-          <vue-input class="db" type="text" :value="i.assert" @change="(e) => handleUpdate(index, 'assert', e.target.value)" />
-        </td>
-        <td class="tc">
-          <vue-button small @click="handleDelete" class="icon-button round danger flat" iconLeft="remove_circle" />
-        </td>
-      </tr>
+    <table class="table odd">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Type</th>
+          <th>Expect</th>
+          <th>Value</th>
+          <th style="width: 18px"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(i, index) in value" :key="index">
+          <td>
+            <vue-input
+              class="db"
+              small
+              type="text"
+              :value="i.key"
+              @change="e => handleUpdate(index, 'key', e.target.value)"
+            />
+          </td>
+          <td>
+            <VueSelect
+              :value="i.key_type"
+              @update="e => handleUpdate(index, 'key_type', e)"
+              button-class="flat"
+            >
+              <VueSelectButton value="integer" label="integer" />
+              <VueSelectButton value="string" label="string" />
+              <VueSelectButton value="boolean" label="boolean" />
+            </VueSelect>
+          </td>
+          <td>
+            <VueSelect
+              :value="i.comparator"
+              @update="e => handleUpdate(index, 'comparator', e)"
+              button-class="flat"
+            >
+              <VueSelectButton value="less" label="less" />
+              <VueSelectButton value="equal" label="equal" />
+              <VueSelectButton value="more" label="more" />
+            </VueSelect>
+          </td>
+          <td>
+            <vue-input
+              small
+              class="db"
+              type="text"
+              :value="i.expect_value"
+              @change="e => handleUpdate(index, 'expect_value', e.target.value)"
+            />
+          </td>
+          <td style="width: 18px">
+            <vue-button
+              small
+              @click="handleDelete"
+              class="icon-button round red flat"
+              iconLeft="remove_circle"
+            />
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -37,9 +78,6 @@
 export default {
   name: 'Response',
   props: {
-    title: {
-      default: '',
-    },
     value: {
       default: () => [],
     },
@@ -53,11 +91,10 @@ export default {
     handleAdd() {
       const temp = [...this.value];
       temp.push({
-        description: '',
-        name: '',
-        required: false,
-        type: 'string',
-        assert: '',
+        key: '',
+        key_type: 'string',
+        comparator: 'comparator',
+        expect_value: '',
       });
       this.$emit('input', temp);
     },
@@ -70,13 +107,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "@/assets/styles/colors.scss";
 .title {
   font-size: 12px;
-  padding: 5px 0;
+  padding: 5px;
   font-weight: 600;
   border-style: solid;
   border-width: 1px 0 0;
-  margin-top: 15px;
+  margin-top: 10px;
   border-image-source: radial-gradient(
     circle at 50% 3%,
     rgba(193, 201, 209, 0.53),
@@ -87,7 +125,28 @@ export default {
     vertical-align: text-bottom;
   }
 }
-.table{
+.table th {
+  padding: 0 7px;
+  font-weight: 400;
+  height: 30px;
+  text-align: left;
+  color: $vue-ui-grey-400;
+}
+.table td {
+  height: 30px;
+  padding: 0 3px;
+  text-align: left;
+}
+.table {
   width: 100%;
+  text-align: center;
+}
+.odd > tbody > tr:nth-child(odd),
+.even > tbody > tr:nth-child(even) {
+  background-color: #eff4f9;
+}
+
+.table[class*="hover"] > tbody > tr:hover {
+  background-color: #eee;
 }
 </style>

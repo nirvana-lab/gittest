@@ -3,6 +3,7 @@ import * as userService from '@/services/userService';
 const types = {
   SET_REPOS: 'SET_REPOS',
   SET_GIT_REPOS: 'SET_GIT_REPOS',
+  SET_GIT_REPO: 'SET_GIT_REPO',
   SET_RAW: 'SET_RAW',
 };
 
@@ -10,6 +11,7 @@ const types = {
 const initState = {
   repos: [],
   gitRepos: [],
+  gitRepo: {},
   raw: '',
 };
 
@@ -20,6 +22,9 @@ const mutations = {
   },
   [types.SET_GIT_REPOS](state, data) {
     state.gitRepos = data;
+  },
+  [types.SET_GIT_REPO](state, data) {
+    state.gitRepo = data;
   },
   [types.SET_RAW](state, data) {
     state.raw = data;
@@ -34,11 +39,14 @@ const actions = {
   GET_GIT_REPOS: ({ commit }) => userService.getAllProjects().then(({ data }) => {
     commit(types.SET_GIT_REPOS, data);
   }),
+  GET_GIT_REPO: ({ commit }, id) => userService.getProject(id).then(({ data }) => {
+    commit(types.SET_GIT_REPO, data);
+  }),
   POST_REPO: (_, id) => userService.postProject(id),
-  GET_FILE: ({ commit }, { id, path, branch }) => {
+  GET_FILE: ({ commit }, { id, path, ref }) => {
     commit(types.SET_RAW, '');
     return userService
-      .getRepoTreeFile(id, path, branch).then(({ data }) => {
+      .getRepoTreeFile(id, path, ref).then(({ data }) => {
         commit(types.SET_RAW, data);
       });
   },

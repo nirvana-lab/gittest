@@ -18,7 +18,6 @@ const routes = [
   },
   {
     path: '/',
-    name: 'main',
     component: Layout,
     children: [
       Repo,
@@ -36,7 +35,11 @@ router.beforeEach((to, from, next) => {
   if (to.meta.login && !token) {
     next();
   } else if (to.meta.login && token) {
-    next(from.path);
+    if (from.path) {
+      next(from.path);
+    } else {
+      next('/');
+    }
   } else if (!token) {
     next({ name: 'login' });
   } else {

@@ -1,19 +1,21 @@
 <template>
-  <div class="repo-info mb-10">
-    <div class="mb-15">
-      <vue-button
-        small
-        class="icon-button round mr-10"
-        @click="handleBack"
-        iconLeft="chevron_left"
-      />
-      <span class="repo-test-method vm" :class="$route.query.method">
-        {{ $route.query.method }}
+  <div class="">
+    <div class="repo-info mb-10">
+      <div class="mb-10">
+        <vue-button
+          small
+          class="icon-button round mr-10"
+          @click="handleBack"
+          iconLeft="chevron_left"
+        />
+        <span class="repo-test-method vm" :class="$route.query.method">
+          {{ $route.query.method }}
+        </span>
+      </div>
+      <span class="repo-test-path">
+        {{ $route.query.path }}
       </span>
     </div>
-    <span class="repo-test-path">
-      {{ $route.query.path }}
-    </span>
   </div>
 </template>
 <script>
@@ -31,6 +33,11 @@ export default {
   },
   methods: {
     handleBack() {
+      if (!this.$route.query.ref || !this.$route.query.ref) {
+        this.$router.push({
+          name: 'RepoList',
+        });
+      }
       this.$router.push({
         name: 'RepoDetail',
         params: { id: this.$route.params.id },
@@ -46,7 +53,7 @@ export default {
 <style lang="scss" scoped>
 .repo-info {
   flex-shrink: 0;
-  padding: 12px 12px 16px 12px;
+  padding: 12px;
   border-radius: 4px;
   background-color: #2d3444;
   color: #fff;
@@ -93,7 +100,7 @@ export default {
   }
 }
 .repo-test-path {
-  font-size: 13px;
+  font-size: 12px;
   display: inline-block;
   word-break: break-word;
   font-family: monospace;

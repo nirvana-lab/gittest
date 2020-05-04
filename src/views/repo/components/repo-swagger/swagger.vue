@@ -1,5 +1,5 @@
 <template>
-  <div class="repo-detail-swagger"></div>
+  <div></div>
 </template>
 
 <script>
@@ -56,17 +56,7 @@ export default {
       this.handleParse();
     },
   },
-  mounted() {
-    if (this.$route.query.file) {
-      this.$store.dispatch('repo/GET_FILE', { id: this.$route.params.id, path: this.$route.query.file, branch: this.$route.query.branch });
-    }
-  },
 };
 </script>
 <style lang="scss" scoped>
-.repo-detail-swagger{
-  max-width: 950px;
-  width: 100%;
-  margin: 0 auto;
-}
 </style>

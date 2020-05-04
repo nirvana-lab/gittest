@@ -12,7 +12,7 @@
       />
       <vue-input
         placeholder="请输入名称进行查看"
-        class="flat warning db"
+        class="flat orange db"
         icon-left="search"
         v-model.trim="search"
       />
@@ -22,7 +22,7 @@
     </h3>
     <vue-loading class="big" v-if="loading" />
     <div class="clear repo-wrapper" v-if="!loading">
-      <div class="g-sm-4" v-for="repo in repos" :key="repo.id">
+      <div class="g-sm-4 g-xs-6" v-for="repo in repos" :key="repo.id">
         <Repo :repo="repo" />
       </div>
     </div>
@@ -43,9 +43,7 @@
         </VueSelect>
       </div>
       <div slot="footer" class="actions">
-        <VueButton class="warning" @click="handleCreateRepo" :loading="loadingCreate"
-          >确认</VueButton
-        >
+        <VueButton class="orange" @click="handleCreateRepo" :loading="loadingCreate">确认</VueButton>
         <VueButton class="flat" @click="create = false">取消</VueButton>
       </div>
     </VueModal>
@@ -115,7 +113,7 @@ export default {
   margin: 0 auto;
   padding: 10px;
 }
-.repo-wrapper{
+.repo-wrapper {
   margin: 0 -10px;
 }
 </style>

@@ -3,44 +3,38 @@
     <div class="mb-10">
       <vue-button
         small
-        class="icon-button round mr-10 white"
-        @click="$router.push({ name: 'repoList' })"
+        class="icon-button round mr-15 orange"
+        @click="$router.push({ name: 'RepoList' })"
         iconLeft="chevron_left"
       />
       <span class="title">{{ data.name }}</span>
     </div>
-    <vue-tag small>
-      <vue-tag-item>{{ data.default_branch }}
-      </vue-tag-item>
-    </vue-tag>
-     <vue-button
-       @click="handleToGit"
-        iconLeft="description"
-        small
-        class="icon-button r warning round"
+    <!-- <vue-select
+      v-model="ref"
+      icon-left="call_split"
+      placeholder="选择需要添加的项目"
+      button-class="black"
+    >
+      <vue-select-button value="master" label="master" />
+    </vue-select> -->
+       <vue-button
+        class="black"
+        :label="data.default_branch"
+      />
+      <vue-button
+        class="r black"
+        label="项目变量"
       />
   </div>
 </template>
 <script>
-import * as userService from '@/services/userService';
 
 export default {
   name: 'RepoInfo',
-  data() {
-    return {
-      loading: true,
-      data: {},
-    };
-  },
-  methods: {
-    handleToGit() {
-      window.open(this.data.web_url, '_blank');
+  computed: {
+    data() {
+      return this.$store.state.repo.gitRepo;
     },
-  },
-  created() {
-    userService.getProject(this.$route.params.id).then(({ data }) => {
-      this.data = data;
-    });
   },
 };
 </script>
@@ -49,13 +43,17 @@ export default {
   flex-shrink: 0;
   padding: 12px;
   border-radius: 4px;
-  background-color: #1b1c1d;
+  background-color: #2d3444;
   color: #fff;
-  box-shadow: 0 4px 8px 0 rgba(36,46,66,.06);
+  box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.06);
   .title {
     font-size: 16px;
     font-weight: 500;
     vertical-align: middle;
+  }
+  .white {
+    color: #fff;
+    fill: #fff;
   }
 }
 </style>

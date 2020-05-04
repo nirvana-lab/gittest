@@ -1,5 +1,6 @@
 const proxy = require('koa-proxies');
 const cookie = require('cookie');
+const compose = require('koa-compose');
 
 const config = {
   target: process.env.GIT,
@@ -29,7 +30,9 @@ const configNv = {
     },
   },
 };
-module.exports = [
+
+const middleware = () => compose([
   proxy('/api/git', config),
   proxy('/api/nv', configNv),
-];
+]);
+module.exports = middleware;

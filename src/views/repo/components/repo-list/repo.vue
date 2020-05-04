@@ -8,7 +8,6 @@
           <vue-tag>
             <vue-tag-item>{{ repo.namespace.name }}</vue-tag-item>
             <vue-tag-item class="detail">
-              <vue-icon icon="call_split" />
               {{ repo.default_branch || "No initial" }}
             </vue-tag-item>
           </vue-tag>
@@ -36,7 +35,7 @@ export default {
   props: ['repo'],
   methods: {
     toDetail() {
-      this.$router.push({ name: 'repoDetail', params: { id: this.repo.id }, query: { branch: this.repo.default_branch } });
+      this.$router.push({ name: 'RepoDetail', params: { id: this.repo.id } });
     },
   },
 };
@@ -48,6 +47,7 @@ export default {
 .repo-card {
   background-color: white;
   border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.06);
   .content {
     padding: 15px;

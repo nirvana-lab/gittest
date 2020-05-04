@@ -4,31 +4,29 @@
       <RepoInfo/>
       <RepoTree/>
     </div>
-    <div  class="repo-detail-right">
-      <NvTab/>
-<RepoSwagger/>
+    <div class="repo-detail-right">
+      <RepoTab/>
+      <router-view class="repo-detail-container" v-if="!loading"></router-view>
     </div>
-
   </div>
 </template>
 
 <script>
+import RepoTab from '../components/repo-detail/tab.vue';
 import RepoTree from '../components/repo-detail/tree.vue';
-import RepoSwagger from '../components/repo-detail/swagger.vue';
 import RepoInfo from '../components/repo-detail/info.vue';
 
 export default {
   name: 'RepoDetail',
-  components: { RepoTree, RepoSwagger, RepoInfo },
+  components: { RepoTab, RepoTree, RepoInfo },
   data() {
     return {
       loading: true,
     };
   },
-  mounted() {
-    if (this.$route.query.path) {
-      this.$store.dispatch('repo/GET_FILE', { id: this.$route.params.id, path: this.$route.query.file, branch: this.$route.query.branch });
-    }
+  async mounted() {
+    await this.$store.dispatch('repo/GET_GIT_REPO', this.$route.params.id);
+    this.loading = false;
   },
 };
 </script>
@@ -45,7 +43,7 @@ export default {
   flex-shrink: 0;
   min-height: 1px;
   flex-direction: column;
-  padding: 10px 0px 10px 15px;
+  padding: 15px 0px 10px 15px;
 }
 .repo-detail-right{
   flex-grow: 1;
@@ -53,5 +51,10 @@ export default {
   min-height: 1px;
   overflow: auto;
   padding: 0px 15px 10px;
+}
+.repo-detail-container{
+  max-width: 950px;
+  width: 100%;
+  margin: 0 auto;
 }
 </style>
