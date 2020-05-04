@@ -23,7 +23,7 @@
         <tr v-for="(i, index) in value" :key="index">
           <td>
             <vue-input
-              class="db"
+              class="db warning"
               small
               type="text"
               :value="i.key"
@@ -55,7 +55,7 @@
           <td>
             <vue-input
               small
-              class="db"
+              class="db warning"
               type="text"
               :value="i.expect_value"
               @change="e => handleUpdate(index, 'expect_value', e.target.value)"

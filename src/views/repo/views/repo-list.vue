@@ -12,7 +12,7 @@
       />
       <vue-input
         placeholder="请输入名称进行查看"
-        class="flat orange db"
+        class="flat warning db"
         icon-left="search"
         v-model.trim="search"
       />

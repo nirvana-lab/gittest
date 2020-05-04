@@ -15,10 +15,10 @@
             <vue-switch />
           </td>
           <td>
-            <vue-input class="db" small type="text" />
+            <vue-input class="db warning" small type="text" />
           </td>
           <td>
-            <vue-input class="db" type="text" small />
+            <vue-input class="db warning" type="text" small />
           </td>
           <td>
             <vue-button
