@@ -16,6 +16,8 @@ export const createEnv = ({ params, data }) => axios.post('/api/nv/envs', data, 
 
 export const getEnv = (id) => axios.get(`/api/nv/envs/${id}/variables`);
 
+export const deleteEnv = (id) => axios.delete(`/api/nv/envs/${id}`);
+
 export const updateEnv = (id, data) => axios.put(`/api/nv/envs/${id}/variables`, { metadata: data });
 
 export const getVariable = (id) => axios.get('/api/nv/repo/variables', { params: { project_id: id } });

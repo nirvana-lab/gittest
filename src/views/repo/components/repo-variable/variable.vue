@@ -1,6 +1,7 @@
 <template>
   <div v-if="this.current">
      <div class="title">
+      <vue-button small class="flat r red" @click="show = true" label="删除"/>
       <vue-button small class="flat r" @click="handleSave" label="保存"/>
       <span class="name mr-5">Variable</span>
       <vue-button small class="icon-button round orange flat" @click="handleAdd" iconLeft="add_circle"/>
@@ -40,17 +41,21 @@
         </tr>
       </tbody>
     </table>
+    <EnvDelete v-if="show" :show.sync="show" :id="current"/>
   </div>
 </template>
 
 <script>
 import * as testService from '@/services/testService';
+import EnvDelete from './envDelete.vue';
 
 export default {
   name: 'RepoVariable',
+  components: { EnvDelete },
   data() {
     return {
       data: [],
+      show: false,
     };
   },
   watch: {

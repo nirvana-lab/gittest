@@ -1,5 +1,7 @@
 <template>
-  <div class="repo-variable">
+<div>
+  <vue-loading class="big pt-5" v-if="loading" />
+  <div class="repo-variable" v-else>
     <div class="repo-variable-left">
       <Env/>
     </div>
@@ -7,6 +9,8 @@
       <Variable/>
     </div>
   </div>
+</div>
+
 </template>
 
 <script>
@@ -28,13 +32,16 @@ export default {
   },
   methods: {
     handleFetch() {
+      this.loading = true;
       const {
         file, ref,
       } = this.$route.query;
       const { id } = this.$route.params;
       if (file && id) {
         const params = { project_id: id, file_path: file, ref: ref || this.repo.default_branch };
-        this.$store.dispatch('variable/GET_ENVS', params);
+        this.$store.dispatch('variable/GET_ENVS', params).then(() => {
+          this.loading = false;
+        });
       }
     },
   },

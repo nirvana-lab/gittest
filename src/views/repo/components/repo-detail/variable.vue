@@ -45,7 +45,7 @@
         :loading="loadingCreate"
         >确认</VueButton
       >
-      <VueButton class="flat" @click="create = false">取消</VueButton>
+      <VueButton :disabled="loadingCreate" class="flat" @click="$emit('update:show', false)">取消</VueButton>
     </div>
   </VueModal>
 </template>
