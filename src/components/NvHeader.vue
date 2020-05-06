@@ -18,7 +18,7 @@
       <div class="space"></div>
       <VueAvatar class="mr-5" v-if="user.avatar_url" :src="user.avatar_url"/>
       <VueDropdown :label="user.name" buttonClass="flat" icon-right="keyboard_arrow_down">
-        <VueDropdownButton>登出</VueDropdownButton>
+        <VueDropdownButton @click="handleLogout">登出</VueDropdownButton>
       </VueDropdown>
     </div>
   </header>
@@ -35,7 +35,7 @@ export default {
     },
   },
   methods: {
-    handleDelete() {
+    handleLogout() {
       Cookies.remove('token');
       this.$router.push({ name: 'login' });
     },

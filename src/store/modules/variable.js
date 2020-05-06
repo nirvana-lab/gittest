@@ -2,13 +2,15 @@ import * as testService from '@/services/testService';
 
 const types = {
   SET_ENVS: 'SET_ENVS',
-  SET_ENV_ID: 'SET_ENV_ID',
+  SET_ENV: 'SET_ENV',
+  SET_CURRENT: 'SET_CURRENT',
 };
 
 // initState
 const initState = {
   envs: [],
-  env: -1,
+  env: {},
+  current: '',
 };
 
 // mutations
@@ -16,32 +18,38 @@ const mutations = {
   [types.SET_ENVS](state, data) {
     state.envs = data;
   },
-  [types.SET_ENV_ID](state, id) {
-    state.env = id;
+  [types.SET_ENV](state, data) {
+    state.env = data;
+  },
+  [types.SET_CURRENT](state, data) {
+    state.current = data;
   },
 };
 
 // actions
 const actions = {
-  GET_ENVS: ({ commit }, {
-    id, ref, path,
-  }) => testService.getEnvs({
-    params: {
-      project_id: id, file_path: path, ref,
-    },
-  }).then(({ data }) => {
-    commit(types.SET_ENVS, data.data);
-  }),
-  // UPDATE_TEST: ({ commit }, id) => commit(types.SET_TEST_ID, id),
-  // CREATE_TEST: ({ commit }) => commit(types.SET_TEST_ID, -1),
-  // CLEAR_TEST: ({ commit }) => {
-  //   commit(types.SET_TESTS, []);
-  //   commit(types.SET_TEST_ID, -1);
-  // },
+  CLEAR_ENV: ({ commit }) => {
+    commit(types.SET_CURRENT, '');
+    commit(types.SET_ENV, {});
+  },
+  GET_ENVS: ({ commit }, params) => testService
+    .getEnvs({ params })
+    .then(({ data }) => {
+      commit(types.SET_ENVS, data.data);
+    }),
+  GET_ENV: ({ commit }, id) => {
+    commit(types.SET_CURRENT, '');
+    commit(types.SET_ENV, {});
+    return testService
+      .getEnv(id)
+      .then(({ data }) => {
+        commit(types.SET_CURRENT, id);
+        commit(types.SET_ENV, data.data.metadata);
+      });
+  },
 };
 // getters
-const getters = {
-};
+const getters = {};
 
 export default {
   namespaced: true,

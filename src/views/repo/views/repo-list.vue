@@ -23,7 +23,7 @@
     <vue-loading class="big" v-if="loading" />
     <div class="clear repo-wrapper" v-if="!loading">
       <div class="g-sm-4 g-xs-6" v-for="repo in repos" :key="repo.id">
-        <Repo :repo="repo" />
+        <Repo :repo="repo" @handleFetch="handleFetch"/>
       </div>
     </div>
     <VueModal v-if="create" title="添加项目" class="small" @close="create = false">

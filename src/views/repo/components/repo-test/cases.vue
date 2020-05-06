@@ -10,7 +10,7 @@
     <vue-loading class="pt-5" v-if="loading"/>
     <div
       class="test-case"
-      :class="{ active: current === i.id }"
+      :class="{ 'active': $route.params.test === i.id }"
       @click="handleGetCase(i.id)"
       v-for="i in filterCases"
       :key="i.id"
@@ -70,9 +70,6 @@ export default {
     },
     repo() {
       return this.$store.state.repo.gitRepo;
-    },
-    current() {
-      return this.$route.params.test;
     },
   },
   mounted() {

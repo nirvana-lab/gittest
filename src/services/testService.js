@@ -10,7 +10,14 @@ export const updateTest = ({ id, data }) => axios.put(`/api/nv/testcases/${id}`,
 
 export const runTest = (id) => axios.get(`/api/nv/testcases/${id}/run`);
 
-
 export const getEnvs = ({ params }) => axios.get('/api/nv/envs', { params });
 
-export const createEnvs = ({ params, data }) => axios.post('/api/nv/envs', data, { params });
+export const createEnv = ({ params, data }) => axios.post('/api/nv/envs', data, { params });
+
+export const getEnv = (id) => axios.get(`/api/nv/envs/${id}/variables`);
+
+export const updateEnv = (id, data) => axios.put(`/api/nv/envs/${id}/variables`, { metadata: data });
+
+export const getVariable = (id) => axios.get('/api/nv/repo/variables', { params: { project_id: id } });
+
+export const updateVariable = (data, id) => axios.put('/api/nv/repo/variables', { metadata: data }, { params: { project_id: id } });

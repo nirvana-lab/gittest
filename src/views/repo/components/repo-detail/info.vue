@@ -9,28 +9,22 @@
       />
       <span class="title">{{ data.name }}</span>
     </div>
-    <!-- <vue-select
-      v-model="ref"
-      icon-left="call_split"
-      placeholder="选择需要添加的项目"
-      button-class="black"
-    >
-      <vue-select-button value="master" label="master" />
-    </vue-select> -->
-       <vue-button
-        class="black"
-        :label="data.default_branch"
-      />
-      <vue-button
-        class="r black"
-        label="项目变量"
-      />
+    <vue-button class="black" :label="data.default_branch" />
+    <vue-button class="r black" label="项目变量" @click="show = true"/>
+    <Variable :show.sync="show" v-if="show"/>
   </div>
 </template>
 <script>
+import Variable from './variable.vue';
 
 export default {
   name: 'RepoInfo',
+  components: { Variable },
+  data() {
+    return {
+      show: false,
+    };
+  },
   computed: {
     data() {
       return this.$store.state.repo.gitRepo;

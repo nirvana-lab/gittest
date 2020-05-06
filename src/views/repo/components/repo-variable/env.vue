@@ -1,42 +1,116 @@
 <template>
   <div class="variable-envs">
-    <template v-for="(i, index) in data">
+    <div class="title">
+      <span class="name mr-5">Envs</span>
+      <vue-button
+        @click="create = true"
+        small
+        class="icon-button round orange flat"
+        iconLeft="add_circle"
+      />
+    </div>
+    <template v-for="(i, index) in envs">
       <div
         :key="index"
         class="variable-env ell"
-        :class="{'active': $route.query.file === i.path}"
-        @click="handleClick(item)"
+        :class="{ active: $route.query.file === i.path }"
+        @click="handleGetEnv(i.id)"
       >
-        <vue-icon class="mr-5" icon="style" />
-        {{ i.name }}
+        <!-- <vue-icon class="mr-5" icon="style" /> -->
+        <div class="b mb-5">{{ i.env }}</div>
+        <div class="sm secondary">{{ i.description }}</div>
       </div>
     </template>
+    <VueModal v-if="create" title="创建环境" class="small" @close="create = false">
+      <div class="default-body">
+        <h4 class="mb-5">环境名</h4>
+        <vue-input class="db warning" small type="text" v-model="form.env" />
+        <h4 class="mb-5">描述</h4>
+        <vue-input class="db warning" small type="text" v-model="form.description" />
+      </div>
+      <div slot="footer" class="actions">
+        <VueButton
+          class="orange"
+          :disabled="!form.env.length"
+          @click="handleCreate"
+          :loading="loadingCreate"
+          >确认</VueButton
+        >
+        <VueButton class="flat" @click="create = false">取消</VueButton>
+      </div>
+    </VueModal>
   </div>
 </template>
 
 <script>
-import * as userService from '@/services/userService';
+import * as testService from '@/services/testService';
 
 export default {
   name: 'RepoTree',
   data() {
     return {
       loading: true,
-      open: false,
-      data: [],
+      create: false,
+      loadingCreate: false,
+      form: {
+        description: '',
+        env: '',
+      },
     };
   },
-  computed: {},
-  methods: {},
-  beforeMount() {
-    userService.getRepoTree(this.$route.params.id).then(({ data }) => {
-      this.loading = false;
-      this.data = data;
-    });
+  computed: {
+    envs() {
+      return this.$store.state.variable.envs;
+    },
+    repo() {
+      return this.$store.state.repo.gitRepo;
+    },
+  },
+  methods: {
+    handleGetEnv(id) {
+      this.$store.dispatch('variable/GET_ENV', id);
+    },
+    handleCreate() {
+      this.loadingCreate = true;
+      const { file, ref } = this.$route.query;
+      const { id } = this.$route.params;
+      const params = {
+        project_id: id,
+        file_path: file,
+        ref: ref || this.repo.default_branch,
+      };
+      testService
+        .createEnv({
+          params,
+          data: this.form,
+        })
+        .then(() => {
+          this.loadingCreate = false;
+          this.create = false;
+          this.form = {
+            description: '',
+            env: '',
+          };
+          if (file && id) {
+            this.$store.dispatch('variable/GET_ENVS', params);
+          }
+        }).catch(() => {
+          this.create = false;
+          this.loadingCreate = false;
+        });
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
+.title {
+  font-size: 13px;
+  padding: 0 5px 5px;
+  font-weight: 600;
+  .name {
+    vertical-align: text-bottom;
+  }
+}
 .variable-envs {
   padding-bottom: 15px;
   flex-grow: 1;
@@ -48,7 +122,6 @@ export default {
   padding: 5px;
   user-select: none;
   border-radius: 4px;
-  font-weight: 500;
   &:hover {
     background-color: rgba(193, 201, 209, 0.53);
   }

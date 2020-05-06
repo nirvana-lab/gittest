@@ -21,15 +21,30 @@ export default {
       loading: true,
     };
   },
-  watch: {
-    $route(newRouter) {
+  computed: {
+    repo() {
+      return this.$store.state.repo.gitRepo;
+    },
+  },
+  methods: {
+    handleFetch() {
       const {
         file, ref,
-      } = newRouter.query;
-      const { id } = newRouter.params;
-      if (file && ref && id) {
-        this.$store.dispatch('variable/GET_ENVS', { id: this.$route.params.id, path: encodeURIComponent(this.$route.query.file), ref: this.$route.query.ref });
+      } = this.$route.query;
+      const { id } = this.$route.params;
+      if (file && id) {
+        const params = { project_id: id, file_path: file, ref: ref || this.repo.default_branch };
+        this.$store.dispatch('variable/GET_ENVS', params);
       }
+    },
+  },
+  mounted() {
+    this.handleFetch();
+  },
+  watch: {
+    $route() {
+      this.handleFetch();
+      this.$store.dispatch('variable/CLEAR_ENV');
     },
   },
 };

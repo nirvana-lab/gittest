@@ -67,7 +67,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/styles/colors.scss";
 .title {
-  font-size: 12px;
+  font-size: 13px;
   padding: 5px;
   font-weight: 600;
   border-style: solid;
@@ -85,7 +85,7 @@ export default {
 }
 .test-request {
   // margin-right: 20px;
-  min-height: 100px;
+  // min-height: 100px;
   border-radius: 4px;
   background-color: #282c34;
 }

@@ -31,7 +31,7 @@ export default {
   position: sticky;
   top: 0px;
   padding-top: 15px;
-  background-color: #fff;
+  background-color: #eff4f8;
   max-width: 950px;
   width: 100%;
   margin: 0 auto;

@@ -39,7 +39,6 @@ export default {
 .task-card {
   background-color: white;
   border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.06);
   .content {
     padding: 10px 15px;

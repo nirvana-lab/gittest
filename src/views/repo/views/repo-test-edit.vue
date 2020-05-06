@@ -2,10 +2,10 @@
   <div class="repo-test-form">
     <div class="repo-test-tab clear mb-10">
       <VueGroup v-model="choice" class="round">
-        <VueGroupButton :value="0" class="round">{{choice === 1?'用例':'保存'}}</VueGroupButton>
+        <VueGroupButton :value="0" class="round" @click="handleSave">{{choice === 1?'用例':'保存'}}</VueGroupButton>
         <VueGroupButton :value="1" class="round" @click="handleRun">运行</VueGroupButton>
       </VueGroup>
-      <vue-button class="round r red flat" @click="handleSave">删除</vue-button>
+      <vue-button class="round r red flat" @click="deleteDialog= true">删除</vue-button>
     </div>
     <template v-if="choice === 0">
       <div>
@@ -19,6 +19,15 @@
     <div v-else>
       <pre class="result-cmd"><vue-loading class="big orange" v-if="loading"/>{{run}}</pre>
     </div>
+     <VueModal v-if="deleteDialog" title="删除测试用例" class="small" @close="deleteDialog = false">
+      <div class="default-body">
+        你确定要删除测试用例吗？
+      </div>
+      <div slot="footer" class="actions">
+        <VueButton class="orange" @click="handleDelete" :loading="loadingDelete">确认</VueButton>
+        <VueButton class="flat" @click="create = false" :disabled="loadingDelete">取消</VueButton>
+      </div>
+    </VueModal>
   </div>
 </template>
 <script>
@@ -35,6 +44,8 @@ export default {
   data() {
     return {
       loading: true,
+      deleteDialog: false,
+      loadingDelete: false,
       run: '',
       choice: 0,
       description: '',
@@ -62,6 +73,27 @@ export default {
         this.run = data.result;
       });
     },
+    async handleDelete() {
+      const { params, query } = this.$route;
+      this.loadingDelete = true;
+      try {
+        await testService.getTest(this.$route.params.test);
+        await this.$store.dispatch('test/GET_TESTS', {
+          projectId: params.id, filePath: query.file, ref: query.ref || this.repo.default_branch, method: query.method, path: query.path,
+        });
+        this.$router.push({
+          name: 'RepoTest',
+          params,
+          query,
+        });
+      } catch (err) {
+        this.loadingDelete = false;
+        this.deleteDialog = false;
+      } finally {
+        this.loadingDelete = false;
+        this.deleteDialog = false;
+      }
+    },
     handleFetch() {
       testService.getTest(this.$route.params.test).then(({ data }) => {
         this.description = data.content.description || '';
@@ -72,6 +104,7 @@ export default {
       });
     },
     handleSave() {
+      if (this.choice === 1) return;
       const resultParameters = this.parameters.map((i) => ({
         key: i.key,
         type: i.type,
@@ -106,9 +139,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .result-cmd{
-  background-color: #2d3444;
+  background-color: #282c34;
   border-radius: 4px;
   padding: 10px;
+  font-size: 12px;
+  line-height: 14px;
   color: #fff;
 }
 .repo-test-form {

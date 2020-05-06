@@ -2,7 +2,18 @@
   <div class="repo">
     <div class="repo-card">
       <div class="content">
-        <h3 class="mt-0"><span class="cp" @click="toDetail">{{ repo.name }}</span></h3>
+        <h3 class="mt-0">
+          <span class="cp" @click="toDetail">{{ repo.name }}</span>
+          <VueDropdown buttonClass="icon-button round flat small" class="r" icon-right="more_vert">
+            <VueDropdownButton @click="handleDelete(repo.id)">删除</VueDropdownButton>
+          </VueDropdown>
+          <!-- <vue-button
+            small
+            class="icon-button round flat r"
+            icon-left="more_vert"
+            @click="toDetail"
+          /> -->
+        </h3>
         <div class="clear">
           <vue-avatar class="small  mr-10" v-if="repo.avatar_url" :src="repo.avatar_url"/>
           <vue-tag>
@@ -11,12 +22,6 @@
               {{ repo.default_branch || "No initial" }}
             </vue-tag-item>
           </vue-tag>
-          <vue-button
-            small
-            class="icon-button round flat r"
-            icon-left="keyboard_arrow_right"
-            @click="toDetail"
-          />
         </div>
       </div>
       <div class="footer sm secondary">
@@ -30,12 +35,19 @@
 </template>
 
 <script>
+import * as UserService from '@/services/userService';
+
 export default {
   name: 'Repo',
   props: ['repo'],
   methods: {
     toDetail() {
       this.$router.push({ name: 'RepoDetail', params: { id: this.repo.id } });
+    },
+    handleDelete(id) {
+      UserService.deleteProject(id).then(() => {
+        this.$emit('handleFetch');
+      });
     },
   },
 };
@@ -47,7 +59,6 @@ export default {
 .repo-card {
   background-color: white;
   border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.06);
   .content {
     padding: 15px;
