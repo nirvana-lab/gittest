@@ -6,7 +6,7 @@ const oauth = () => async (ctx, next) => {
   if (code && !token) {
     const res = await GitService.getGitToken(code);
     ctx.cookies.set('token', res.data.access_token, { httpOnly: false });
-    ctx.redirect('/1123');
+    ctx.redirect('/');
   }
   await next();
 };

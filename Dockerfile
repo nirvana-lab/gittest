@@ -1,7 +1,7 @@
 FROM node:12-alpine
 COPY . /home
 
-RUN cd /home && npm install --registry https://registry.npm.taobao.org && npm run build && npm run server:build
+RUN cd /home && npm install --registry https://registry.npm.taobao.org && npm run build
 
 # COPY ./run.sh /usr/share/run.sh
 
@@ -15,4 +15,4 @@ RUN set -ex \
     && echo "$TZ" > /etc/timezone
     # && rm -rf /app
 
-CMD PORT=80 GIT=${GIT} DB_USER=${DB_USER} DB_PASSWORD=${DB_PASSWORD} DB_HOST=${DB_HOST} DB_PORT=${DB_PORT} node /home/dist/server
+CMD PORT=80 GIT=${GIT} TEST=${TEST} DB_NAME=${DB_NAME} DB_USER=${DB_USER} DB_PASSWORD=${DB_PASSWORD} DB_HOST=${DB_HOST} DB_PORT=${DB_PORT} node /home/dist/server

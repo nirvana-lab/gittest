@@ -18,7 +18,7 @@ const proxy = require('./middlewares/proxy');
 const router = require('./routes');
 
 const app = new Koa();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 app.use(proxy());
 app.use(bodyParser());
 

@@ -59,7 +59,7 @@
           <td style="width: 18px">
             <vue-button
               small
-              @click="handleDelete"
+              @click="handleDelete(index)"
               class="icon-button round red flat"
               iconLeft="remove_circle"
             />
