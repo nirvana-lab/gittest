@@ -1,9 +1,9 @@
 <template>
   <div class="repo-test-form">
-    <div class="clear mb-10">
-      <vue-button class="r" @click="handleCreate">创建</vue-button>
-      <vue-input type="text" large v-model="name" class="flat b" placeholder="用例名称"/>
-      <vue-input type="text" v-model="description" class="flat" placeholder="描述信息"/>
+    <div class="clear title mb-10">
+      <vue-button class="r round black" @click="handleCreate">Save</vue-button>
+      <vue-input type="text" large v-model="name" class="flat b" placeholder="Title"/>
+      <vue-input type="text" v-model="description" class="flat" placeholder="description"/>
     </div>
     <Params v-model="parameters" />
     <Request v-model="body"/>
@@ -12,10 +12,10 @@
 </template>
 <script>
 import * as testService from '@/services/testService';
+import content from '@/utils/content';
 import Params from '../components/repo-test/params.vue';
 import Request from '../components/repo-test/request.vue';
 import Response from '../components/repo-test/response.vue';
-
 
 export default {
   name: 'TestCreate',
@@ -27,7 +27,13 @@ export default {
       name: '',
       parameters: [],
       body: '',
-      response: [],
+      response: [
+        {
+          comparator: 'equal', expect_value: '200', key: 'status_code', key_type: 'integer',
+        }, {
+          comparator: 'less', expect_value: '1000', key: 'response_time', key_type: 'integer',
+        },
+      ],
     };
   },
   mounted() {
@@ -45,6 +51,17 @@ export default {
             type: i.schema.type || 'string',
             value: '',
           }));
+      }
+      if (this.paths.requestBody) {
+        if (this.paths.requestBody.content) {
+          Object.keys(this.paths.requestBody.content).forEach((key) => {
+            if (key === 'application/json' && this.paths.requestBody.content[key].schema) {
+              this.body = JSON.stringify(content(this.paths.requestBody.content[key].schema), null, 2);
+            } else {
+              this.body = key;
+            }
+          });
+        }
       }
     },
     handleCreate() {
@@ -99,7 +116,7 @@ export default {
 .repo-test-form {
   max-width: 950px;
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 20px;
 }
 .repo-test-form-table-title {
   font-size: 12px;

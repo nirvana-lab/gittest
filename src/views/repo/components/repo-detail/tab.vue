@@ -1,9 +1,9 @@
 <template>
   <div class="repo-tab">
     <VueGroup v-model="choice" class="mb-10 round" @update="handleChange">
-      <VueGroupButton value="RepoDoc" class="round">文档</VueGroupButton>
-      <VueGroupButton value="RepoTask" class="round">任务</VueGroupButton>
-      <VueGroupButton value="RepoVariable" class="round">文档变量</VueGroupButton>
+      <VueGroupButton value="RepoDoc" class="round">Swagger</VueGroupButton>
+      <VueGroupButton value="RepoTask" class="round">Tasks</VueGroupButton>
+      <VueGroupButton value="RepoVariable" class="round">Variables</VueGroupButton>
     </VueGroup>
   </div>
 </template>

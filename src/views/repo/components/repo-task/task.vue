@@ -12,7 +12,7 @@
         <div class="sm secondary">{{ task.last_activity_at | dateformat }}</div>
       </div>
       <div class="footer sm secondary">
-        <span class="mr-5">更新时间</span
+        <span class="mr-5">Last Activity</span
         ><span>
           {{ task.last_activity_at | dateformat }}
         </span>

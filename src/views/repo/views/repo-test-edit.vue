@@ -1,31 +1,38 @@
 <template>
   <div class="repo-test-form">
     <div class="repo-test-tab clear mb-10">
-      <VueGroup v-model="choice" class="round">
-        <VueGroupButton :value="0" class="round" @click="handleSave">{{choice === 1?'用例':'保存'}}</VueGroupButton>
-        <VueGroupButton :value="1" class="round" @click="handleRun">运行</VueGroupButton>
-      </VueGroup>
-      <vue-button class="round r red flat" @click="deleteDialog= true">删除</vue-button>
+      <vue-button class="round black mr-10" @click="handleSave">Save</vue-button>
+      <vue-button iconLeft="bug_report" class="round" @click="handleRun">Run</vue-button>
+      <vue-button class="round r red flat" @click="deleteDialog = true">Delete</vue-button>
     </div>
-    <template v-if="choice === 0">
-      <div>
-        <vue-input type="text" large v-model="name" class="flat b" placeholder="用例名称"/>
-        <vue-input type="text" v-model="description" class="flat" placeholder="描述信息"/>
-      </div>
+    <vue-loading class="big pt-10" v-if="loading"/>
+    <template v-else>
+      <nv-table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><vue-input type="text" large v-model="name" class="flat b" /></td>
+            <td><vue-input type="text" v-model="description" class="flat" /></td>
+          </tr>
+        </tbody>
+      </nv-table>
       <Params v-model="parameters" />
-      <Request v-model="body"/>
-      <Response v-model="response"/>
+      <Request v-model="body" />
+      <Response v-model="response" />
     </template>
-    <div v-else>
-      <pre class="result-cmd"><vue-loading class="big orange" v-if="loading"/>{{run}}</pre>
-    </div>
-     <VueModal v-if="deleteDialog" title="删除测试用例" class="small" @close="deleteDialog = false">
+    <VueModal v-if="deleteDialog" title="Delete Test Cases" class="small" @close="deleteDialog = false">
       <div class="default-body">
-        你确定要删除测试用例吗？
+        Do you want to delete this testcase？
       </div>
       <div slot="footer" class="actions">
-        <VueButton class="orange" @click="handleDelete" :loading="loadingDelete">确认</VueButton>
-        <VueButton class="flat" @click="create = false" :disabled="loadingDelete">取消</VueButton>
+        <div class="space"></div>
+        <VueButton class="red round" @click="handleDelete" :loading="loadingDelete">Confirm</VueButton>
+        <VueButton class="flat round" @click="create = false" :disabled="loadingDelete">Cancel</VueButton>
       </div>
     </VueModal>
   </div>
@@ -35,7 +42,6 @@ import * as testService from '@/services/testService';
 import Params from '../components/repo-test/params.vue';
 import Request from '../components/repo-test/request.vue';
 import Response from '../components/repo-test/response.vue';
-
 
 export default {
   name: 'TestEdit',
@@ -47,7 +53,6 @@ export default {
       deleteDialog: false,
       loadingDelete: false,
       run: '',
-      choice: 0,
       description: '',
       name: '',
       parameters: [],
@@ -67,10 +72,10 @@ export default {
   },
   methods: {
     handleRun() {
-      this.loading = true;
-      this.$store.dispatch('test/RUN_TEST', this.$route.params.test).then(({ data }) => {
-        this.loading = false;
-        this.run = data.result;
+      this.$router.push({
+        name: 'RepoTestLog',
+        params: this.$route.params,
+        query: this.$route.query,
       });
     },
     async handleDelete() {
@@ -79,7 +84,11 @@ export default {
       try {
         await testService.getTest(this.$route.params.test);
         await this.$store.dispatch('test/GET_TESTS', {
-          projectId: params.id, filePath: query.file, ref: query.ref || this.repo.default_branch, method: query.method, path: query.path,
+          projectId: params.id,
+          filePath: query.file,
+          ref: query.ref || this.repo.default_branch,
+          method: query.method,
+          path: query.path,
         });
         this.$router.push({
           name: 'RepoTest',
@@ -95,39 +104,51 @@ export default {
       }
     },
     handleFetch() {
-      testService.getTest(this.$route.params.test).then(({ data }) => {
-        this.description = data.content.description || '';
-        this.name = data.content.case || '';
-        this.body = data.content.body || '';
-        this.response = data.content.validator || [];
-        this.parameters = data.content.parameters || [];
-      });
+      this.loading = true;
+      testService
+        .getTest(this.$route.params.test)
+        .then(({ data }) => {
+          this.description = data.content.description || '';
+          this.name = data.content.case || '';
+          this.body = data.content.body || '';
+          this.response = data.content.validator || [];
+          this.parameters = data.content.parameters || [];
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     handleSave() {
-      if (this.choice === 1) return;
       const resultParameters = this.parameters.map((i) => ({
         key: i.key,
         type: i.type,
         value: i.value,
         in: i.in,
       }));
-      testService.updateTest({
-        id: this.$route.params.test,
-        data: {
-          case: this.name,
-          description: this.description,
-          setup: [],
-          teardown: [],
-          parameters: resultParameters,
-          body: this.body,
-          validator: this.response,
-        },
-      }).then(() => {
-        const { params, query } = this.$route;
-        this.$store.dispatch('test/GET_TESTS', {
-          projectId: params.id, filePath: query.file, ref: query.ref || this.repo.default_branch, method: query.method, path: query.path,
+      testService
+        .updateTest({
+          id: this.$route.params.test,
+          data: {
+            case: this.name,
+            description: this.description,
+            setup: [],
+            teardown: [],
+            parameters: resultParameters,
+            body: this.body,
+            validator: this.response,
+          },
+        })
+        .then(() => {
+          const { params, query } = this.$route;
+          this.$store.dispatch('test/GET_TESTS', {
+            projectId: params.id,
+            filePath: query.file,
+            ref: query.ref || this.repo.default_branch,
+            method: query.method,
+            path: query.path,
+          });
         });
-      });
     },
   },
   computed: {
@@ -138,20 +159,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.result-cmd{
-  background-color: #282c34;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 12px;
-  line-height: 14px;
-  color: #fff;
-}
 .repo-test-form {
   max-width: 950px;
   width: 100%;
   margin: 0 auto;
 }
-.repo-test-tab{
+.repo-test-tab {
   padding-bottom: 10px;
   border-style: solid;
   border-width: 0 0 1px 0;

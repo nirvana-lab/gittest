@@ -5,7 +5,7 @@
       <vue-button
         @click="create = true"
         small
-        class="icon-button round orange flat"
+        class="icon-button round purple flat"
         iconLeft="add_circle"
       />
     </div>
@@ -21,22 +21,23 @@
         <div class="sm secondary">{{ i.description }}</div>
       </div>
     </template>
-    <VueModal v-if="create" title="创建环境" class="small" @close="create = false">
+    <VueModal v-if="create" title="Create Env" class="small" @close="create = false">
       <div class="default-body">
-        <h4 class="mb-5">环境名</h4>
+        <h4 class="mb-5">Enviroment</h4>
         <vue-input class="db warning" small type="text" v-model="form.env" />
-        <h4 class="mb-5">描述</h4>
+        <h4 class="mb-5">Description</h4>
         <vue-input class="db warning" small type="text" v-model="form.description" />
       </div>
       <div slot="footer" class="actions">
+        <div class="space"></div>
         <VueButton
-          class="orange"
+          class="purple round"
           :disabled="!form.env.length"
           @click="handleCreate"
           :loading="loadingCreate"
-          >确认</VueButton
+          >Confirm</VueButton
         >
-        <VueButton class="flat" @click="create = false">取消</VueButton>
+        <VueButton class="flat round" @click="create = false">Cancel</VueButton>
       </div>
     </VueModal>
   </div>

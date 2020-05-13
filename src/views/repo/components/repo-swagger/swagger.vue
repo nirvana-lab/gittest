@@ -24,7 +24,7 @@ export default {
         const opblocks = document.getElementsByClassName('opblock-summary');
         opblocks.forEach((opblock) => {
           const link = document.createElement('BUTTON');
-          link.innerHTML = '测试用例';
+          link.innerHTML = 'Test Cases';
           link.onclick = () => this.$router.push({
             name: 'RepoTest',
             params: this.$route.params,

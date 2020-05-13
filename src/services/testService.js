@@ -8,7 +8,7 @@ export const createTest = ({ params, data }) => axios.post('/api/nv/testcases', 
 
 export const updateTest = ({ id, data }) => axios.put(`/api/nv/testcases/${id}`, data);
 
-export const runTest = (id) => axios.get(`/api/nv/testcases/${id}/run`);
+export const runTest = (params) => axios.get(`/api/nv/testcases/${params.env_id}/${params.test_id}/run`);
 
 export const getEnvs = ({ params }) => axios.get('/api/nv/envs', { params });
 

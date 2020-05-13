@@ -1,14 +1,14 @@
 <template>
   <div v-if="this.current">
      <div class="title">
-      <vue-button small class="flat r red" @click="show = true" label="删除"/>
-      <vue-button small class="flat r" @click="handleSave" label="保存"/>
+      <vue-button small class="flat r red" @click="show = true" label="Delete"/>
+      <vue-button small class="flat r" @click="handleSave" label="Save"/>
       <span class="name mr-5">Variable</span>
-      <vue-button small class="icon-button round orange flat" @click="handleAdd" iconLeft="add_circle"/>
+      <vue-button small class="icon-button round purple flat" @click="handleAdd" iconLeft="add_circle"/>
     </div>
     <table class="table odd">
       <col width="50px" />
-      <col width="70%" />
+      <col width="65%" />
       <col width="100%" />
       <col width="32px" />
       <thead>
@@ -25,10 +25,10 @@
             <vue-switch v-model="value.selected"/>
           </td>
           <td>
-            <vue-input v-model="value.key" class="db warning" small type="text" />
+            <input v-model="value.key" class="input long small" type="text" />
           </td>
           <td>
-            <vue-input v-model="value.value" class="db warning" type="text" small />
+            <input v-model="value.value" class="input long small" type="text" />
           </td>
           <td>
             <vue-button

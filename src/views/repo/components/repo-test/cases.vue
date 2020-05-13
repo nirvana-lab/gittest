@@ -1,9 +1,9 @@
 <template>
   <div class="test-cases">
-    <vue-button class="r" @click="handleCreateCase" label="新建" />
+    <vue-button class="r" @click="handleCreateCase" label="Create" />
     <vue-input
-      placeholder="请输入名称进行查看"
-      class="flat orange db mb-10"
+      placeholder="Search..."
+      class="flat purple db mb-10"
       icon-left="search"
       v-model.trim="search"
     />
@@ -85,7 +85,7 @@ export default {
   border-radius: 4px;
   &:hover,
   &.active {
-    background-color: #eaeeef;
+      background-color: rgba(193, 201, 209, 0.53);
   }
   .title {
     font-weight: 500;

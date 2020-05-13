@@ -58,38 +58,35 @@ export default {
 }
 .repo-test-method {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 900;
   min-width: 57px;
   padding: 5px 10px;
-  text-align: center;
   display: inline-block;
-  border-radius: 3px;
   font-family: sans-serif;
-  background-color: #fff;
   color: #fff;
   &.POST {
-    background-color: #49cc90;
+    color: #49cc90;
   }
   &.PUT {
-    background-color: #fca130;
+    color: #fca130;
   }
   &.DELETE {
-    background-color: #f93e3e;
+    color: #f93e3e;
   }
   &.GET {
-    background-color: #61affe;
+    color: #4d9ae7;
   }
   &.PATCH {
-    background-color: #50e3c2;
+    color: #50e3c2;
   }
   &.HEAD {
-    background-color: #9012fe;
+    color: #9012fe;
   }
   &.OPTIONS {
-    background-color: #0d5aa7;
+    color: #0d5aa7;
   }
   &.DEPRECATED {
-    background-color: #ebebeb;
+    color: #ebebeb;
   }
 }
 .repo-test-path {

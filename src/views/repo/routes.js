@@ -7,6 +7,7 @@ import RepoVariable from '@/views/repo/views/repo-variable.vue';
 import RepoTest from '@/views/repo/views/repo-test.vue';
 import RepoTestCreate from '@/views/repo/views/repo-test-create.vue';
 import RepoTestEdit from '@/views/repo/views/repo-test-edit.vue';
+import RepoTestLog from '@/views/repo/views/repo-test-log.vue';
 
 const index = Vue.extend({
   template: '<router-view/>',
@@ -19,6 +20,11 @@ export default {
       path: ':id/tests',
       component: RepoTest,
       children: [
+        {
+          path: ':test/log',
+          name: 'RepoTestLog',
+          component: RepoTestLog,
+        },
         {
           path: ':test',
           name: 'RepoTestEdit',

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const getUser = () => axios.get('/api/git/v4/user');
 
-export const getAllProjects = () => axios.get('/api/git/v4/projects?membership=true&simple=true');
+export const getAllProjects = (page) => axios.get(`/api/git/v4/projects?membership=true&simple=true&per_page=20&page=${page}`);
 
 export const getProjects = () => axios.get('/api/repos');
 

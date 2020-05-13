@@ -1,6 +1,14 @@
 div {
   box-sizing: border-box;
 }
-table{
-  border-collapse:collapse
+.input{
+  outline: none;
+  border: 1px solid #dee4e7;
+  padding: 0 6px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 8px 6px;
+  &.small{
+    padding: 4px 6px;
+  }
 }

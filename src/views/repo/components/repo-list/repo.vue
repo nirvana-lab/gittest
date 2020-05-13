@@ -3,9 +3,12 @@
     <div class="repo-card">
       <div class="content">
         <h3 class="mt-0">
-          <span class="cp" @click="toDetail">{{ repo.name }}</span>
+          <span v-if="repo.visibility === 'deleted'" class="delete"
+            >#{{ repo.id }} {{ repo.name }}</span
+          >
+          <span v-else class="cp" @click="toDetail">{{ repo.name }}</span>
           <VueDropdown buttonClass="icon-button round flat small" class="r" icon-right="more_vert">
-            <VueDropdownButton @click="handleDelete(repo.id)">删除</VueDropdownButton>
+            <VueDropdownButton @click="handleDelete(repo.id)">Delete</VueDropdownButton>
           </VueDropdown>
           <!-- <vue-button
             small
@@ -15,17 +18,22 @@
           /> -->
         </h3>
         <div class="clear">
-          <vue-avatar class="small  mr-10" v-if="repo.avatar_url" :src="repo.avatar_url"/>
+          <vue-button
+            v-if="repo.visibility === 'deleted'"
+            class="icon-button red mr-10 round"
+            iconLeft="do_not_disturb"
+          />
+          <vue-avatar v-else class="mr-10" :src="repo.avatar_url || gitlab" />
           <vue-tag>
-            <vue-tag-item>{{ repo.namespace.name }}</vue-tag-item>
+            <vue-tag-item>{{ repo.namespace.full_path }}</vue-tag-item>
             <vue-tag-item class="detail">
-              {{ repo.default_branch || "No initial" }}
+              {{ repo.visibility }}
             </vue-tag-item>
           </vue-tag>
         </div>
       </div>
       <div class="footer sm secondary">
-        <span class="mr-5">更新时间</span
+        <span class="mr-5">Last Activity</span
         ><span>
           {{ repo.last_activity_at | dateformat }}
         </span>
@@ -36,10 +44,16 @@
 
 <script>
 import * as UserService from '@/services/userService';
+import gitlab from '../../../../assets/imgs/gitlab.png';
 
 export default {
   name: 'Repo',
   props: ['repo'],
+  data() {
+    return {
+      gitlab,
+    };
+  },
   methods: {
     toDetail() {
       this.$router.push({ name: 'RepoDetail', params: { id: this.repo.id } });
@@ -53,15 +67,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.repo{
- padding: 0 10px 10px 10px;
+.repo {
+  padding: 0 10px 10px 10px;
 }
 .repo-card {
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.06);
+  .delete {
+    opacity: 0.7;
+    text-decoration: line-through;
+  }
   .content {
-    padding: 15px;
+    padding: 15px 15px 10px;
   }
   .footer {
     padding: 10px 15px;

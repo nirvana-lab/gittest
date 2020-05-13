@@ -4,12 +4,16 @@
       <span class="name mr-5">RESPONSE</span>
       <vue-button
         small
-        class="icon-button round orange flat"
+        class="icon-button round purple flat"
         iconLeft="add_circle"
         @click="handleAdd"
       />
     </div>
-    <table class="table odd">
+    <nv-table odd>
+      <col width="60%" />
+      <col width="120px" />
+      <col width="210px" />
+      <col width="100%" />
       <thead>
         <tr>
           <th>Key</th>
@@ -22,9 +26,8 @@
       <tbody>
         <tr v-for="(i, index) in value" :key="index">
           <td>
-            <vue-input
-              class="db warning"
-              small
+            <input
+              class="input long small"
               type="text"
               :value="i.key"
               @change="e => handleUpdate(index, 'key', e.target.value)"
@@ -34,28 +37,52 @@
             <VueSelect
               :value="i.key_type"
               @update="e => handleUpdate(index, 'key_type', e)"
-              button-class="flat"
+              button-class="small white"
+              class="long"
             >
-              <VueSelectButton value="integer" label="integer" />
-              <VueSelectButton value="string" label="string" />
-              <VueSelectButton value="boolean" label="boolean" />
+              <VueSelectButton
+                v-for="i in ['integer',
+                  'long',
+                  'float',
+                  'double',
+                  'string',
+                  'byte',
+                  'binary',
+                  'boolean',
+                  'date',
+                  'dateTime',
+                  'password']"
+                :value="i"
+                :label="i"
+                :key="i"
+              />
             </VueSelect>
           </td>
           <td>
             <VueSelect
               :value="i.comparator"
               @update="e => handleUpdate(index, 'comparator', e)"
-              button-class="flat"
+              button-class="small white"
+              class="long"
             >
-              <VueSelectButton value="less" label="less" />
-              <VueSelectButton value="equal" label="equal" />
-              <VueSelectButton value="more" label="more" />
+              <VueSelectButton
+                v-for="i in ['equals',
+                  'less_than',
+                  'less_than_or_equals',
+                  'greater_than',
+                  'greater_than_or_equals',
+                  'not_equals',
+                  'string_equals',
+                  'length_equals']"
+                :value="i"
+                :label="i"
+                :key="i"
+              />
             </VueSelect>
           </td>
           <td>
-            <vue-input
-              small
-              class="db warning"
+            <input
+              class="input long small"
               type="text"
               :value="i.expect_value"
               @change="e => handleUpdate(index, 'expect_value', e.target.value)"
@@ -71,7 +98,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </nv-table>
   </div>
 </template>
 <script>

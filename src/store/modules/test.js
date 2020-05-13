@@ -28,7 +28,7 @@ const actions = {
   }).then(({ data }) => {
     commit(types.SET_TESTS, data.data);
   }),
-  RUN_TEST: (id) => testService.runTest(id),
+  RUN_TEST: (_null, data) => testService.runTest(data),
   CLEAR_TEST: ({ commit }) => {
     commit(types.SET_TESTS, []);
   },

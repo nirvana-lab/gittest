@@ -8,17 +8,17 @@
           getGitRepos();
           create = true;
         "
-        label="添加项目"
+        label="Add Repo"
       />
       <vue-input
-        placeholder="请输入名称进行查看"
+        placeholder="Search ..."
         class="flat warning db"
         icon-left="search"
         v-model.trim="search"
       />
     </div>
     <h3>
-      <span class="mr-10 ml-5">列表</span>
+      <span class="mr-10 ml-5">Repos</span>
     </h3>
     <vue-loading class="big" v-if="loading" />
     <div class="clear repo-wrapper" v-if="!loading">
@@ -26,25 +26,30 @@
         <Repo :repo="repo" @handleFetch="handleFetch"/>
       </div>
     </div>
-    <VueModal v-if="create" title="添加项目" class="small" @close="create = false">
+    <VueModal v-if="create" title="Add Repo" class="small" @close="handleClose">
       <div class="default-body">
-        <VueSelect
+        <!-- <VueSelect
           v-model="choose"
-          placeholder="选择需要添加的项目"
+          placeholder="Select Repo"
           button-class="flat"
           style="width: 100%;"
         >
           <VueSelectButton
             :value="repo.id"
-            :label="repo.name"
+            :label="repo.path_with_namespace"
             v-for="repo in gitRepos"
             :key="repo.id"
           />
-        </VueSelect>
+        </VueSelect> -->
+        <div v-for="repo in gitRepos" class="repo-select" :class="{'active': repo.id === choose}"
+        @click="choose = repo.id"
+        :key="repo.id">{{repo.path_with_namespace}}</div>
       </div>
       <div slot="footer" class="actions">
-        <VueButton class="orange" @click="handleCreateRepo" :loading="loadingCreate">确认</VueButton>
-        <VueButton class="flat" @click="create = false">取消</VueButton>
+        <NvPage :total="total" @changePage="page" :currentPage="currentPage" :currentSize="20"/>
+        <div class="space"></div>
+        <VueButton class="purple round" @click="handleCreateRepo" :loading="loadingCreate">Confirm</VueButton>
+        <VueButton class="flat round" @click="handleClose">Cancel</VueButton>
       </div>
     </VueModal>
   </div>
@@ -59,6 +64,8 @@ export default {
   data() {
     return {
       search: '',
+      total: 0,
+      currentPage: 1,
       create: false,
       loading: true,
       loadingCreate: false,
@@ -97,8 +104,19 @@ export default {
         this.$store.dispatch('repo/GET_REPOS');
       }
     },
+    handleClose() {
+      this.create = false;
+      this.currentPage = 1;
+      this.total = 0;
+    },
+    page(page) {
+      this.currentPage = page;
+      this.getGitRepos(page);
+    },
     async getGitRepos() {
-      await this.$store.dispatch('repo/GET_GIT_REPOS');
+      await this.$store.dispatch('repo/GET_GIT_REPOS', this.currentPage).then((res) => {
+        this.total = res.headers['x-total'] ? parseInt(res.headers['x-total'], 10) : 0;
+      });
     },
   },
   beforeMount() {
@@ -115,5 +133,18 @@ export default {
 }
 .repo-wrapper {
   margin: 0 -10px;
+}
+.default-body{
+  min-width: 500px;
+  max-width: 500px;
+}
+.repo-select{
+  padding: 5px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  &:hover, &.active{
+    background-color: rgba(193, 201, 209, 0.53);
+  }
 }
 </style>

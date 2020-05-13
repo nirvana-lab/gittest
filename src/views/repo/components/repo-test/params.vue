@@ -2,9 +2,18 @@
   <div>
     <div class="title">
       <span class="name mr-5">PARAMS</span>
-      <vue-button small class="icon-button round orange flat" iconLeft="add_circle" @click="handleAdd" />
+      <vue-button
+        small
+        class="icon-button round purple flat"
+        iconLeft="add_circle"
+        @click="handleAdd"
+      />
     </div>
-    <table class="table odd">
+    <nv-table odd>
+      <col width="110px" />
+      <col width="60%" />
+      <col width="120px" />
+      <col width="100%" />
       <thead>
         <tr>
           <th>In</th>
@@ -17,10 +26,11 @@
       <tbody>
         <tr v-for="(i, index) in value" :key="index">
           <td>
-              <VueSelect
+            <VueSelect
               :value="i.in"
               @update="e => handleUpdate(index, 'in', e)"
-              button-class="flat"
+              button-class="small white"
+              class="long"
             >
               <VueSelectButton value="header" label="header" />
               <VueSelectButton value="path" label="path" />
@@ -28,9 +38,8 @@
             </VueSelect>
           </td>
           <td>
-            <vue-input
-              class="db"
-              small
+            <input
+              class="input long small"
               type="text"
               :value="i.key"
               @change="e => handleUpdate(index, 'key', e.target.value)"
@@ -40,18 +49,31 @@
             <VueSelect
               :value="i.type"
               @update="e => handleUpdate(index, 'type', e)"
-              button-class="flat"
+              button-class="small white"
+              class="long"
             >
-              <VueSelectButton value="integer" label="integer" />
-              <VueSelectButton value="string" label="string" />
-              <VueSelectButton value="boolean" label="boolean" />
+              <VueSelectButton
+                v-for="i in ['integer',
+                  'long',
+                  'float',
+                  'double',
+                  'string',
+                  'byte',
+                  'binary',
+                  'boolean',
+                  'date',
+                  'dateTime',
+                  'password']"
+                :value="i"
+                :label="i"
+                :key="i"
+              />
             </VueSelect>
           </td>
           <td>
-            <vue-input
-              class="db"
+            <input
+              class="input long small"
               type="text"
-              small
               :value="i.value"
               @change="e => handleUpdate(index, 'value', e.target.value)"
             />
@@ -66,7 +88,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </nv-table>
   </div>
 </template>
 <script>
@@ -104,7 +126,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '@/assets/styles/colors.scss';
+@import "@/assets/styles/colors.scss";
 .title {
   font-size: 13px;
   padding: 5px;
@@ -121,29 +143,5 @@ export default {
   .name {
     vertical-align: text-bottom;
   }
-}
-.table th {
-  padding: 0 7px;
-  font-weight: 400;
-  height: 30px;
-  text-align: left;
-  color: $vue-ui-grey-400;
-}
-.table td {
-  height: 30px;
-  padding: 0 3px;
-  text-align: left;
-}
-.table {
-  width: 100%;
-  text-align: center;
-}
-.odd > tbody > tr:nth-child(odd),
-.even > tbody > tr:nth-child(even) {
-  background-color: #eff4f9;
-}
-
-.table[class*="hover"] > tbody > tr:hover {
-  background-color: #eee;
 }
 </style>

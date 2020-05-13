@@ -1,16 +1,17 @@
 <template>
-  <VueModal title="删除环境" class="small" @close="$emit('update:show', false)">
+  <VueModal title="Delete Environment" class="small" @close="$emit('update:show', false)">
     <div class="body">
-      您确定要删除该环境？
+      Do you want to delete environment?
     </div>
     <div slot="footer" class="actions">
+      <div class="space"></div>
       <VueButton
-        class="orange"
+        class="red round"
         @click="handleDelete"
         :loading="loadingDelete"
-        >确认</VueButton
+        >Confirm</VueButton
       >
-      <VueButton :disabled="loadingDelete" class="flat" @click="$emit('update:show', false)">取消</VueButton>
+      <VueButton :disabled="loadingDelete" class="flat round" @click="$emit('update:show', false)">Cancel</VueButton>
     </div>
   </VueModal>
 </template>

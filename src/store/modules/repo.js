@@ -36,8 +36,9 @@ const actions = {
   GET_REPOS: ({ commit, rootState }) => userService.getProjects(rootState.global.user.id).then(({ data }) => {
     commit(types.SET_REPOS, data);
   }),
-  GET_GIT_REPOS: ({ commit }) => userService.getAllProjects().then(({ data }) => {
-    commit(types.SET_GIT_REPOS, data);
+  GET_GIT_REPOS: ({ commit }, page) => userService.getAllProjects(page).then((res) => {
+    commit(types.SET_GIT_REPOS, res.data);
+    return res;
   }),
   GET_GIT_REPO: ({ commit }, id) => userService.getProject(id).then(({ data }) => {
     commit(types.SET_GIT_REPO, data);

@@ -4,6 +4,7 @@ import '@/assets/styles/lib.scss';
 import '@/assets/styles/grid.scss';
 import '@/assets/styles/swagger.css';
 import '@/lib/slime.css';
+import '@/assets/icons';
 import dayjs from 'dayjs';
 import router from '@/router';
 import store from '@/store';
@@ -11,6 +12,7 @@ import slime from '@/lib/slime.umd.min';
 import codemirror from './components/codemirror';
 import App from './App.vue';
 import components from './components';
+import './utils/content';
 
 Vue.use(codemirror);
 

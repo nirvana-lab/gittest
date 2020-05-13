@@ -10,15 +10,13 @@ module.exports = {
   chainWebpack: (config) => {
     config.resolve.alias
       .set('vue$', 'vue/dist/vue.esm.js');
+    const svgRule = config.module.rule('svg');
+    svgRule.uses.clear();
+    svgRule
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]',
+      });
   },
-  // chainWebpack: (config) => {
-  //   const svgRule = config.module.rule('svg');
-  //   svgRule.uses.clear();
-  //   svgRule
-  //     .use('svg-sprite-loader')
-  //     .loader('svg-sprite-loader')
-  //     .options({
-  //       symbolId: '[name]',
-  //     });
-  // },
 };

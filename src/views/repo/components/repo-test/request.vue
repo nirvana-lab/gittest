@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="title">
+    <div class="title mb-5">
       <span class="name">BODY</span>
     </div>
     <codemirror
