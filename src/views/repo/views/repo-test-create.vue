@@ -1,9 +1,25 @@
 <template>
   <div class="repo-test-form">
     <div class="clear title mb-10">
-      <vue-button class="r round black" @click="handleCreate">Save</vue-button>
-      <vue-input type="text" large v-model="name" class="flat b" placeholder="Title"/>
-      <vue-input type="text" v-model="description" class="flat" placeholder="description"/>
+      <nv-table>
+        <col width="60%">
+        <col width="100%">
+        <col width="80px">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><vue-input type="text" large v-model="name" class="b db"/></td>
+            <td><vue-input type="text" v-model="description" class="db" /></td>
+            <td><vue-button class="r round black" @click="handleCreate">Save</vue-button></td>
+          </tr>
+        </tbody>
+      </nv-table>
     </div>
     <Params v-model="parameters" />
     <Request v-model="body"/>
@@ -31,7 +47,7 @@ export default {
         {
           comparator: 'equal', expect_value: '200', key: 'status_code', key_type: 'integer',
         }, {
-          comparator: 'less', expect_value: '1000', key: 'response_time', key_type: 'integer',
+          comparator: 'less', expect_value: '1000', key: 'elapsed.seconds', key_type: 'integer',
         },
       ],
     };

@@ -39,6 +39,7 @@ export default {
   margin-left: -150px;
   margin-top: -250px;
   border-radius: 6px;
+  box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.06);
 }
 .login-header {
   font-size: 24px;

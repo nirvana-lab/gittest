@@ -2,20 +2,14 @@
   <div class="repo">
     <div class="repo-card">
       <div class="content">
-        <h3 class="mt-0">
+        <h3 class="mt-0 ell">
+          <VueDropdown buttonClass="icon-button round flat small" class="r" icon-right="more_vert">
+            <VueDropdownButton @click="handleDelete(repo.id)">Delete</VueDropdownButton>
+          </VueDropdown>
           <span v-if="repo.visibility === 'deleted'" class="delete"
             >#{{ repo.id }} {{ repo.name }}</span
           >
           <span v-else class="cp" @click="toDetail">{{ repo.name }}</span>
-          <VueDropdown buttonClass="icon-button round flat small" class="r" icon-right="more_vert">
-            <VueDropdownButton @click="handleDelete(repo.id)">Delete</VueDropdownButton>
-          </VueDropdown>
-          <!-- <vue-button
-            small
-            class="icon-button round flat r"
-            icon-left="more_vert"
-            @click="toDetail"
-          /> -->
         </h3>
         <div class="clear">
           <vue-button
@@ -25,7 +19,7 @@
           />
           <vue-avatar v-else class="mr-10" :src="repo.avatar_url || gitlab" />
           <vue-tag>
-            <vue-tag-item>{{ repo.namespace.full_path }}</vue-tag-item>
+            <vue-tag-item>{{ repo.namespace.name }}</vue-tag-item>
             <vue-tag-item class="detail">
               {{ repo.visibility }}
             </vue-tag-item>

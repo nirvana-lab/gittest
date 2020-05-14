@@ -12,7 +12,7 @@
       />
       <vue-input
         placeholder="Search ..."
-        class="flat warning db"
+        class="flat purple db"
         icon-left="search"
         v-model.trim="search"
       />
@@ -23,30 +23,21 @@
     <vue-loading class="big" v-if="loading" />
     <div class="clear repo-wrapper" v-if="!loading">
       <div class="g-sm-4 g-xs-6" v-for="repo in repos" :key="repo.id">
-        <Repo :repo="repo" @handleFetch="handleFetch"/>
+        <Repo :repo="repo" @handleFetch="handleFetch" />
       </div>
     </div>
     <VueModal v-if="create" title="Add Repo" class="small" @close="handleClose">
       <div class="default-body">
-        <!-- <VueSelect
-          v-model="choose"
-          placeholder="Select Repo"
-          button-class="flat"
-          style="width: 100%;"
-        >
-          <VueSelectButton
-            :value="repo.id"
-            :label="repo.path_with_namespace"
-            v-for="repo in gitRepos"
-            :key="repo.id"
-          />
-        </VueSelect> -->
-        <div v-for="repo in gitRepos" class="repo-select" :class="{'active': repo.id === choose}"
-        @click="choose = repo.id"
-        :key="repo.id">{{repo.path_with_namespace}}</div>
+        <div
+          v-for="repo in gitRepos"
+          class="repo-select"
+          :class="{'active': repo.id === choose}"
+          @click="choose = repo.id"
+          :key="repo.id"
+        >{{repo.path_with_namespace}}</div>
       </div>
       <div slot="footer" class="actions">
-        <NvPage :total="total" @changePage="page" :currentPage="currentPage" :currentSize="20"/>
+        <NvPage :total="total" @changePage="page" :currentPage="currentPage" :currentSize="20" />
         <div class="space"></div>
         <VueButton class="purple round" @click="handleCreateRepo" :loading="loadingCreate">Confirm</VueButton>
         <VueButton class="flat round" @click="handleClose">Cancel</VueButton>
@@ -114,9 +105,13 @@ export default {
       this.getGitRepos(page);
     },
     async getGitRepos() {
-      await this.$store.dispatch('repo/GET_GIT_REPOS', this.currentPage).then((res) => {
-        this.total = res.headers['x-total'] ? parseInt(res.headers['x-total'], 10) : 0;
-      });
+      await this.$store
+        .dispatch('repo/GET_GIT_REPOS', this.currentPage)
+        .then((res) => {
+          this.total = res.headers['x-total']
+            ? parseInt(res.headers['x-total'], 10)
+            : 0;
+        });
     },
   },
   beforeMount() {
@@ -134,16 +129,23 @@ export default {
 .repo-wrapper {
   margin: 0 -10px;
 }
-.default-body{
+.default-body {
   min-width: 500px;
   max-width: 500px;
+  display: flex;
+  flex-direction: column;
 }
-.repo-select{
+.default-body-inner{
+  min-height: 1px;
+  flex-flow: 1;
+}
+.repo-select {
   padding: 5px 7px;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
-  &:hover, &.active{
+  &:hover,
+  &.active {
     background-color: rgba(193, 201, 209, 0.53);
   }
 }

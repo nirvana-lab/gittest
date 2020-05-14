@@ -36,7 +36,7 @@ const postRepo = async (ctx) => {
 const deleteRepo = async (ctx) => {
   const headers = { authorization: `Bearer ${ctx.cookies.get('token')}` };
   const { data: user } = await getUser(headers);
-  await Repo.delete({ user: user.id, repo: ctx.params.id });
+  await Repo.destroy({ where: { user: user.id, repo: ctx.params.id } });
 };
 
 module.exports = {

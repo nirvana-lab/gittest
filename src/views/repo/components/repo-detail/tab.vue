@@ -27,11 +27,7 @@ export default {
 <style scoped lang="scss">
 @import "@/assets/styles/colors";
 .repo-tab {
-  z-index: 1;
-  position: sticky;
-  top: 0px;
   padding-top: 15px;
-  background-color: #eff4f8;
   max-width: 950px;
   width: 100%;
   margin: 0 auto;

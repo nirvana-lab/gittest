@@ -1,8 +1,10 @@
 <template>
   <div v-if="this.current">
      <div class="title">
-      <vue-button small class="flat r red" @click="show = true" label="Delete"/>
-      <vue-button small class="flat r" @click="handleSave" label="Save"/>
+      <VueDropdown buttonClass="icon-button round flat small" class="r" icon-right="more_vert">
+        <VueDropdownButton @click="show = true">Delete</VueDropdownButton>
+      </VueDropdown>
+      <vue-button v-if="changed" small class="black round r mr-10" @click="handleSave" label="Save"/>
       <span class="name mr-5">Variable</span>
       <vue-button small class="icon-button round purple flat" @click="handleAdd" iconLeft="add_circle"/>
     </div>
@@ -55,16 +57,18 @@ export default {
   data() {
     return {
       data: [],
+      copy: '',
       show: false,
     };
   },
   watch: {
     current() {
-      const result = [];
-      Object.keys(this.variable.env).forEach((i) => {
-        result.push({ key: i, ...this.variable.env[i] });
-      });
+      const result = Object.keys(this.variable.env).map((key) => ({
+        key,
+        ...this.variable.env[key],
+      }));
       this.data = result;
+      this.copy = JSON.stringify(result);
     },
   },
   computed: {
@@ -74,17 +78,17 @@ export default {
     current() {
       return this.variable.current;
     },
+    changed() {
+      return this.copy !== JSON.stringify(this.data);
+    },
   },
   methods: {
     handleSave() {
-      const result = {};
-      this.data.forEach((i) => {
-        result[i.key] = { value: i.value, selected: i.selected };
-      });
+      const result = this.data.map((i) => ({ value: i.value, selected: i.selected }));
       testService.updateEnv(this.current, result);
     },
     handleAdd() {
-      this.data.push({ key: '', value: '', selected: true });
+      this.data.push({ key: '', value: '', selected: false });
     },
     handleDelete(index) {
       this.data.splice(index, 1);
@@ -101,34 +105,5 @@ export default {
   .name {
     vertical-align: text-bottom;
   }
-}
-.table th {
-  padding: 0 7px;
-  font-weight: 400;
-  height: 30px;
-  text-align: left;
-  color: $vue-ui-grey-400;
-}
-.table td {
-  height: 30px;
-  padding: 0 3px;
-  text-align: left;
-}
-.table {
-  width: 100%;
-  text-align: center;
-  table-layout:fixed;
-}
-.table-wrapper {
-  background-color: #fff;
-  border-radius: 4px;
-}
-.odd > tbody > tr:nth-child(odd),
-.even > tbody > tr:nth-child(even) {
-  background-color: #eff4f9;
-}
-
-.table[class*="hover"] > tbody > tr:hover {
-  background-color: #eee;
 }
 </style>

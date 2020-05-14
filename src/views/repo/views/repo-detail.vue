@@ -47,6 +47,8 @@ export default {
 }
 .repo-detail-right{
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   min-height: 1px;
   overflow: auto;
@@ -55,6 +57,7 @@ export default {
 .repo-detail-container{
   max-width: 950px;
   width: 100%;
+  overflow: auto;
   margin: 0 auto;
 }
 </style>

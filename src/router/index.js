@@ -5,6 +5,11 @@ import Layout from '@/views/index.vue';
 import Login from '@/views/login/index.vue';
 import Repo from '@/views/repo/routes';
 
+const OriginalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return OriginalPush.call(this, location).catch((err) => err);
+};
+
 Vue.use(VueRouter);
 
 const routes = [

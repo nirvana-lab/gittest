@@ -1,11 +1,11 @@
 <template>
 <span class="nv-page">
   <span class="dao-btn-group">
-    <vue-button class="icon-button black mr-5" iconLeft="chevron_left" @click="pre" :disabled="this.current == 1"/>
-    <vue-button class="icon-button black" iconLeft="chevron_right" @click="next"
+    <vue-button class="icon-button black mr-5 round" iconLeft="chevron_left" @click="pre" :disabled="this.current == 1"/>
+    <vue-button class="icon-button black round" iconLeft="chevron_right" @click="next"
     :disabled="total=== 0 || this.current == Math.ceil(this.total / this.currentSize)"/>
   </span><span class="nv-page-info"><span v-if="total">{{currentPage===1?1:((currentPage-1)*currentSize+1)}} -
-    {{last}}</span> / {{total}}</span>
+    {{last}}</span> | {{total}}</span>
 </span>
 </template>
 <script>

@@ -10,7 +10,7 @@
     <vue-loading class="pt-5" v-if="loading"/>
     <div
       class="test-case"
-      :class="{ 'active': $route.params.test === i.id }"
+      :class="{ 'active': parseInt($route.params.test, 10) === parseInt(i.id, 10) }"
       @click="handleGetCase(i.id)"
       v-for="i in filterCases"
       :key="i.id"

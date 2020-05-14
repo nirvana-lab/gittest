@@ -64,8 +64,8 @@
             <tr>
               <th></th>
               <th>Key</th>
-              <th>Value</th>
               <th>Comparator</th>
+               <th>Value</th>
               <th>Expect</th>
             </tr>
           </thead>
@@ -121,7 +121,9 @@ export default {
     },
   },
   mounted() {
-    this.handleGetEnv();
+    this.handleGetEnv().then(() => {
+      this.env = !this.envs.length ? -1 : this.envs[0].id;
+    });
   },
   computed: {
     envs() {
@@ -141,7 +143,7 @@ export default {
         file_path: file,
         ref: ref || this.repo.default_branch,
       };
-      this.$store.dispatch('variable/GET_ENVS', params).then(() => {
+      return this.$store.dispatch('variable/GET_ENVS', params).then(() => {
         this.loadingEnv = false;
       });
     },
@@ -197,7 +199,7 @@ export default {
   padding: 0 5px;
 }
 .tr-err{
-  background-color: #{$vue-ui-danger-100}60 !important;
+  background-color: #{$vue-ui-danger-100}50 !important;
 }
 .record_status{
   margin-bottom: 10px;

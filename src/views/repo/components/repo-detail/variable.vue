@@ -1,5 +1,5 @@
 <template>
-  <VueModal title="Global Variable" class="small" @close="$emit('update:show', false)">
+  <VueModal title="Global Variable" class="small" @close="handleCancel">
     <div class="body">
       <table class="table odd mb-10">
         <col width="50px" />
@@ -17,15 +17,13 @@
         <tbody>
           <tr v-for="(value, index) in data" :key="index">
             <td>
-              <vue-switch v-model="value.selected"/>
+              <vue-switch v-model="value.selected" />
             </td>
             <td>
-              <input type="text" class="input long small" v-model.trim="value.key">
-              <!-- <vue-input v-model="value.key" class="db warning" small type="text" /> -->
+              <input type="text" class="input long small" v-model.trim="value.key" />
             </td>
             <td>
-              <input type="text" class="input long small" v-model.trim="value.value">
-              <!-- <vue-input v-model="value.value" class="db warning" type="text" small /> -->
+              <input type="text" class="input long small" v-model.trim="value.value" />
             </td>
             <td>
               <vue-button
@@ -38,17 +36,21 @@
           </tr>
         </tbody>
       </table>
-      <vue-button small class="icon-button round purple flat" @click="handleAdd" iconLeft="add_circle"/>
+      <vue-button
+        small
+        class="icon-button round purple flat"
+        @click="handlePush"
+        iconLeft="add_circle"
+      />
     </div>
     <div slot="footer" class="actions">
       <div class="space"></div>
+      <VueButton class="purple round" @click="handleConfirm" :loading="loading">Confirm</VueButton>
       <VueButton
-        class="purple round"
-        @click="handleSave"
-        :loading="loadingCreate"
-        >Confirm</VueButton
-      >
-      <VueButton :disabled="loadingCreate" class="flat round" @click="$emit('update:show', false)">Cancel</VueButton>
+        :disabled="loading"
+        class="flat round"
+        @click="handleCancel"
+      >Cancel</VueButton>
     </div>
   </VueModal>
 </template>
@@ -61,40 +63,39 @@ export default {
   data() {
     return {
       data: [],
-      create: false,
-      loadingCreate: false,
+      loading: false,
     };
   },
   watch: {
     current() {
-      const result = [];
-      Object.keys(this.variable.env).forEach((i) => {
-        result.push({ key: i, ...this.variable.env[i] });
-      });
-      this.data = result;
+      this.data = Object.keys(this.variable.env).map((key) => ({
+        key,
+        ...this.variable.env[key],
+      }));
     },
   },
   created() {
     testService.getVariable(this.$route.params.id).then(({ data }) => {
-      const result = [];
-      Object.keys(data.data.metadata).forEach((key) => {
-        result.push({ key, ...data.data.metadata[key] });
-      });
-      this.data = result;
+      this.data = Object.keys(data.data.metadata).map((key) => ({
+        key,
+        ...data.data.metadata[key],
+      }));
     });
   },
   methods: {
-    handleSave() {
-      const result = {};
-      this.data.forEach((i) => {
-        result[i.key] = { value: i.value, selected: i.selected };
+    async handleConfirm() {
+      this.loading = true;
+      const result = this.data.map((i) => ({ value: i.value, selected: i.selected }));
+      await testService.updateVariable(result, this.$route.params.id).then(() => {
+        this.handleCancel();
       });
-      testService.updateVariable(result, this.$route.params.id).then(() => {
-        this.$emit('update:show', false);
-      });
+      this.loading = false;
     },
-    handleAdd() {
-      this.data.push({ key: '', value: '', selected: true });
+    handleCancel() {
+      this.$emit('update:show', false);
+    },
+    handlePush() {
+      this.data.push({ key: '', value: '', selected: false });
     },
     handleDelete(index) {
       this.data.splice(index, 1);
@@ -104,7 +105,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "@/assets/styles/colors.scss";
-.body{
+.body {
   padding: 0 24px;
 }
 .title {

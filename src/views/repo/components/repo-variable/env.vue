@@ -13,12 +13,11 @@
       <div
         :key="index"
         class="variable-env ell"
-        :class="{ active: $route.query.file === i.path }"
+        :class="{ active: current === i.id }"
         @click="handleGetEnv(i.id)"
       >
-        <!-- <vue-icon class="mr-5" icon="style" /> -->
         <div class="b mb-5">{{ i.env }}</div>
-        <div class="sm secondary">{{ i.description }}</div>
+        <div class="sm secondary">{{ i.description || '-' }}</div>
       </div>
     </template>
     <VueModal v-if="create" title="Create Env" class="small" @close="create = false">
@@ -62,6 +61,9 @@ export default {
   computed: {
     envs() {
       return this.$store.state.variable.envs;
+    },
+    current() {
+      return this.$store.state.variable.current;
     },
     repo() {
       return this.$store.state.repo.gitRepo;
@@ -113,10 +115,15 @@ export default {
   }
 }
 .variable-envs {
-  padding-bottom: 15px;
+  padding-bottom: 10px;
+  padding-right: 5px;
   flex-grow: 1;
   min-height: 1px;
   overflow: auto;
+  border-style: solid;
+  border-width: 0 1px 0 0;
+  border-image-source: radial-gradient(circle at 50% 3%, rgba(193, 201, 209, 0.53), rgba(255, 255, 255, 0.2));
+  border-image-slice: 1;
 }
 .variable-env {
   cursor: pointer;

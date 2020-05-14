@@ -20,8 +20,6 @@ export default {
       data: [],
     };
   },
-  computed: {},
-  methods: {},
   beforeMount() {
     userService.getRepoTree(this.$route.params.id).then(({ data }) => {
       this.loading = false;

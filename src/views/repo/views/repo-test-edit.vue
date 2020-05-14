@@ -1,7 +1,7 @@
 <template>
   <div class="repo-test-form">
-    <div class="repo-test-tab clear mb-10">
-      <vue-button class="round black mr-10" @click="handleSave">Save</vue-button>
+    <div class="repo-test-tab clear mb-10" v-if="!loading">
+      <vue-button class="round black mr-10" v-if="changed" @click="handleSave">Save</vue-button>
       <vue-button iconLeft="bug_report" class="round" @click="handleRun">Run</vue-button>
       <vue-button class="round r red flat" @click="deleteDialog = true">Delete</vue-button>
     </div>
@@ -16,8 +16,8 @@
         </thead>
         <tbody>
           <tr>
-            <td><vue-input type="text" large v-model="name" class="flat b" /></td>
-            <td><vue-input type="text" v-model="description" class="flat" /></td>
+            <td><vue-input type="text" large v-model="name" class="flat b db" /></td>
+            <td><vue-input type="text" v-model="description" class="flat db" /></td>
           </tr>
         </tbody>
       </nv-table>
@@ -52,6 +52,7 @@ export default {
       loading: true,
       deleteDialog: false,
       loadingDelete: false,
+      copy: {},
       run: '',
       description: '',
       name: '',
@@ -82,7 +83,7 @@ export default {
       const { params, query } = this.$route;
       this.loadingDelete = true;
       try {
-        await testService.getTest(this.$route.params.test);
+        await testService.deleteTest(this.$route.params.test);
         await this.$store.dispatch('test/GET_TESTS', {
           projectId: params.id,
           filePath: query.file,
@@ -114,6 +115,13 @@ export default {
           this.response = data.content.validator || [];
           this.parameters = data.content.parameters || [];
           this.loading = false;
+          this.copy = {
+            description: data.content.description || '',
+            name: data.content.case || '',
+            body: data.content.body || '',
+            response: JSON.stringify(data.content.validator || []),
+            parameters: JSON.stringify(data.content.parameters || []),
+          };
         })
         .catch(() => {
           this.loading = false;
@@ -140,6 +148,13 @@ export default {
           },
         })
         .then(() => {
+          this.copy = {
+            description: this.description,
+            name: this.name,
+            body: this.body,
+            response: JSON.stringify(this.response),
+            parameters: JSON.stringify(resultParameters),
+          };
           const { params, query } = this.$route;
           this.$store.dispatch('test/GET_TESTS', {
             projectId: params.id,
@@ -154,6 +169,14 @@ export default {
   computed: {
     repo() {
       return this.$store.state.repo.gitRepo;
+    },
+    changed() {
+      if (this.copy.description !== this.description) return true;
+      if (this.copy.name !== this.name) return true;
+      if (this.copy.body !== this.body) return true;
+      if (this.copy.response !== JSON.stringify(this.response)) return true;
+      if (this.copy.parameters !== JSON.stringify(this.parameters)) return true;
+      return false;
     },
   },
 };

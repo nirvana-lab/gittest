@@ -1,5 +1,4 @@
 <template>
-<div>
   <vue-loading class="big pt-5" v-if="loading" />
   <div class="repo-variable" v-else>
     <div class="repo-variable-left">
@@ -9,8 +8,6 @@
       <Variable/>
     </div>
   </div>
-</div>
-
 </template>
 
 <script>
@@ -63,7 +60,7 @@ export default {
   min-height: 1px;
 }
 .repo-variable-left{
-  width: 150px;
+  width: 200px;
   display: flex;
   overflow: auto;
   flex-shrink: 0;
