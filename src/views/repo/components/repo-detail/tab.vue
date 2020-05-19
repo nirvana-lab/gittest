@@ -1,8 +1,9 @@
 <template>
   <div class="repo-tab">
-    <VueGroup v-model="choice" class="mb-10 round" @update="handleChange">
+    <VueGroup v-if="$route.query.file" v-model="choice" class="mb-10 round" @update="handleChange">
       <VueGroupButton value="RepoDoc" class="round">Swagger</VueGroupButton>
-      <VueGroupButton value="RepoTask" class="round">Tasks</VueGroupButton>
+      <!-- <VueGroupButton value="RepoTask" class="round">Tasks</VueGroupButton> -->
+      <!-- <VueGroupButton value="RepoScript" class="round">Scripts</VueGroupButton> -->
       <VueGroupButton value="RepoVariable" class="round">Variables</VueGroupButton>
     </VueGroup>
   </div>

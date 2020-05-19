@@ -1,6 +1,7 @@
 import 'codemirror/lib/codemirror.css';
 import '../assets/styles/one-dark.scss';
 import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/python/python';
 import 'codemirror/addon/lint/lint.css';
 import 'codemirror/addon/lint/lint';
 import 'codemirror/addon/fold/foldgutter.css';

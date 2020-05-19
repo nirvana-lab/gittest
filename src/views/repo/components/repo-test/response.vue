@@ -18,8 +18,8 @@
         <tr>
           <th>Key</th>
           <th>Type</th>
+          <th>Match Rule</th>
           <th>Expect</th>
-          <th>Value</th>
           <th style="width: 18px"></th>
         </tr>
       </thead>
@@ -120,7 +120,7 @@ export default {
       temp.push({
         key: '',
         key_type: 'string',
-        comparator: 'comparator',
+        comparator: 'equals',
         expect_value: '',
       });
       this.$emit('input', temp);

@@ -85,7 +85,10 @@ export default {
   methods: {
     async handleConfirm() {
       this.loading = true;
-      const result = this.data.map((i) => ({ value: i.value, selected: i.selected }));
+      const result = {};
+      this.data.forEach((i) => {
+        result[i.key] = { value: i.value, selected: i.selected };
+      });
       await testService.updateVariable(result, this.$route.params.id).then(() => {
         this.handleCancel();
       });

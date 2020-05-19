@@ -25,3 +25,13 @@ export const updateEnv = (id, data) => axios.put(`/api/nv/envs/${id}/variables`,
 export const getVariable = (id) => axios.get('/api/nv/repo/variables', { params: { project_id: id } });
 
 export const updateVariable = (data, id) => axios.put('/api/nv/repo/variables', { metadata: data }, { params: { project_id: id } });
+
+export const getScripts = (id) => axios.get('/api/nv/scripts', { params: { project_id: id } });
+
+export const getScript = (id) => axios.get(`/api/nv/scripts/${id}`);
+
+export const createScript = ({ params, data }) => axios.post('/api/nv/scripts', data, { params });
+
+export const deleteScript = (id) => axios.delete(`/api/nv/scripts/${id}`);
+
+export const updateScript = ({ id, data }) => axios.put(`/api/nv/scripts/${id}`, data);

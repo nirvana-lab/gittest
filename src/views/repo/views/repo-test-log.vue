@@ -36,56 +36,69 @@
       <vue-button iconLeft="format_list_bulleted" class="flat round">total {{run.stat.testcases.total}}</vue-button>
     </div>-->
     <vue-loading class="big pt-5" v-if="loading" />
+    <nv-table odd v-if="!run.details.length && !error.length">
+      <col width="65%" />
+      <col width="100%" />
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(value, index) in variable" :key="index">
+          <td>{{value.key}}</td>
+          <td>{{value.value}}</td>
+        </tr>
+      </tbody>
+    </nv-table>
+    <pre v-if="error.length" class="result-cmd">{{ error }}</pre>
+    <pre v-if="run.console.length" class="result-cmd" style="max-height: 500px">{{ run.console }}</pre>
     <div v-for="detail in run.details" :key="detail['HRUN-Request-ID']">
       <h5 class="mb-10 title">HRUN-Request-ID: {{ detail["HRUN-Request-ID"] }}</h5>
       <div v-for="(record, index) in detail.records" :key="index">
         <div class="record_status">
-          <vue-button iconLeft="assignment" class="round white mr-10" @click="logDialog = true">
-           log
-          </vue-button>
-          <vue-button  :iconLeft="record.status ==='success'?'check_circle':'cancel'" class="flat round" :class="record.status ==='success'?'green':'red'">
-            {{
-            record.status
-            }}
-          </vue-button>
-          <vue-button iconLeft="access_time" class="flat round">
-            {{
-            record.response_time
-            }}
-          </vue-button>
+          <vue-button iconLeft="assignment" class="round white mr-10" @click="logDialog = true">log</vue-button>
+          <vue-button
+            :iconLeft="record.status === 'success' ? 'check_circle' : 'cancel'"
+            class="flat round"
+            :class="record.status === 'success' ? 'green' : 'red'"
+          >{{ record.status }}</vue-button>
+          <vue-button iconLeft="access_time" class="flat round">{{ record.response_time }}</vue-button>
         </div>
         <nv-table odd v-if="record.meta_datas.validators" class="mb-15">
           <col width="40px" />
           <col width="60%" />
-          <col width="120px" />
+          <col width="130px" />
           <col width="100%" />
           <col width="100%" />
           <thead>
             <tr>
               <th></th>
               <th>Key</th>
-              <th>Comparator</th>
-               <th>Value</th>
+              <th>Match Rule</th>
+              <th>Value</th>
               <th>Expect</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="(validators, validatorsIndex) in record.meta_datas.validators.validate_extractor"
+              v-for="(validators, validatorsIndex) in record.meta_datas.validators
+                .validate_extractor"
               :key="validatorsIndex"
-              :class="{ 'tr-err': validators.check_result !=='pass'}"
+              :class="{ 'tr-err': validators.check_result !== 'pass' }"
             >
               <td>
                 <vue-button
-                  :iconLeft="validators.check_result==='pass'?'check_circle':'cancel'"
+                  :iconLeft="validators.check_result === 'pass' ? 'check_circle' : 'cancel'"
                   class="flat round icon-button"
-                  :class="validators.check_result ==='pass'?'green':'red'"
+                  :class="validators.check_result === 'pass' ? 'green' : 'red'"
                 ></vue-button>
               </td>
-              <td class="ell">{{validators.check}}</td>
-              <td>{{validators.comparator}}</td>
-              <td class="ell">{{validators.check_value}}</td>
-              <td class="ell">{{validators.expect}}</td>
+              <td class="ell" v-tooltip="`${validators.check}`">{{ validators.check }}</td>
+              <td>{{ validators.comparator }}</td>
+              <td class="ell" v-tooltip="`${validators.check_value}`">{{ validators.check_value }}</td>
+              <td class="ell" v-tooltip="`${validators.expect}`">{{ validators.expect }}</td>
             </tr>
           </tbody>
         </nv-table>
@@ -109,8 +122,9 @@ export default {
       env: -1,
       loading: false,
       loadingEnv: true,
-      run: { details: [] },
+      run: { console: '', details: [] },
       logDialog: false,
+      error: '',
     };
   },
   watch: {
@@ -119,13 +133,33 @@ export default {
         this.handleGetEnv();
       }
     },
+    env() {
+      this.run = { console: '', details: [] };
+      this.error = '';
+      if (this.env !== -1) {
+        this.$store.dispatch('variable/GET_ENV', this.env);
+      }
+    },
   },
   mounted() {
     this.handleGetEnv().then(() => {
       this.env = !this.envs.length ? -1 : this.envs[0].id;
+      if (this.env !== -1) {
+        this.$store.dispatch('variable/GET_ENV', this.env);
+      }
     });
   },
   computed: {
+    variable() {
+      const { env } = this.$store.state.variable;
+      return Object.keys(env)
+        .map((key) => ({
+          key,
+          value: env[key].value,
+          selected: env[key].selected,
+        }))
+        .filter((i) => i.selected);
+    },
     envs() {
       return this.$store.state.variable.envs;
     },
@@ -155,7 +189,8 @@ export default {
       });
     },
     handleFetch() {
-      this.run = { details: [] };
+      this.run = { console: '', details: [] };
+      this.error = '';
       this.loading = true;
       this.$store
         .dispatch('test/RUN_TEST', {
@@ -165,6 +200,10 @@ export default {
         .then(({ data }) => {
           this.loading = false;
           this.run = data;
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.error = err.response.data.detail;
         });
     },
   },
@@ -198,15 +237,19 @@ export default {
 .title {
   padding: 0 5px;
 }
-.tr-err{
-  background-color: #{$vue-ui-danger-100}50 !important;
+.tr-err {
+  background-color: #{$vue-ui-danger-100}40 !important;
 }
-.record_status{
+.record_status {
   margin-bottom: 10px;
   padding-bottom: 5px;
   border-style: solid;
   border-width: 0 0 1px 0;
-  border-image-source: radial-gradient(circle at 50% 3%, rgba(193, 201, 209, 0.53), rgba(255, 255, 255, 0.2));
+  border-image-source: radial-gradient(
+    circle at 50% 3%,
+    rgba(193, 201, 209, 0.53),
+    rgba(255, 255, 255, 0.2)
+  );
   border-image-slice: 1;
 }
 .repo-test-tab {

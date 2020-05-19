@@ -15,6 +15,18 @@
 <script>
 import axios from 'axios';
 
+axios.interceptors.response.use((response) => response, (err) => {
+  if (err && err.response) {
+    const errCheck = [400, 405, 403, 412, 500, 501, 502, 503, 504].some((errCode) => err.response.status === errCode);
+    if (errCheck) {
+      if (err.response.data.detail) {
+        window.$message({ message: err.response.data.detail, type: 'error' });
+      }
+    }
+  }
+  return window.Promise.reject(err);
+});
+
 export default {
   name: 'Login',
   methods: {

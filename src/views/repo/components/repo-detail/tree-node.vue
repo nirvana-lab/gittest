@@ -60,7 +60,7 @@ export default {
         });
       } else {
         this.$router.replace({
-          name: this.$route.name,
+          name: 'RepoDoc',
           params: this.$route.params,
           query: {
             file: i.path,

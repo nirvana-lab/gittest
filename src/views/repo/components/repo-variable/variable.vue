@@ -8,7 +8,7 @@
       <span class="name mr-5">Variable</span>
       <vue-button small class="icon-button round purple flat" @click="handleAdd" iconLeft="add_circle"/>
     </div>
-    <table class="table odd">
+    <nv-table odd>
       <col width="50px" />
       <col width="65%" />
       <col width="100%" />
@@ -42,7 +42,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </nv-table>
     <EnvDelete v-if="show" :show.sync="show" :id="current"/>
   </div>
 </template>
@@ -82,9 +82,17 @@ export default {
       return this.copy !== JSON.stringify(this.data);
     },
   },
+  mounted() {
+    if (this.current !== '') {
+      this.$store.dispatch('variable/GET_ENV', this.current);
+    }
+  },
   methods: {
     handleSave() {
-      const result = this.data.map((i) => ({ value: i.value, selected: i.selected }));
+      const result = {};
+      this.data.forEach((i) => {
+        result[i.key] = { value: i.value, selected: i.selected };
+      });
       testService.updateEnv(this.current, result);
     },
     handleAdd() {

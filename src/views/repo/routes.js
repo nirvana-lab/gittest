@@ -8,6 +8,8 @@ import RepoTest from '@/views/repo/views/repo-test.vue';
 import RepoTestCreate from '@/views/repo/views/repo-test-create.vue';
 import RepoTestEdit from '@/views/repo/views/repo-test-edit.vue';
 import RepoTestLog from '@/views/repo/views/repo-test-log.vue';
+import RepoScript from '@/views/repo/views/repo-script.vue';
+import RepoScriptCreate from '@/views/repo/views/repo-script-create.vue';
 
 const index = Vue.extend({
   template: '<router-view/>',
@@ -52,6 +54,14 @@ export default {
         path: 'variable',
         name: 'RepoVariable',
         component: RepoVariable,
+      }, {
+        path: 'script/:script',
+        name: 'RepoScript',
+        component: RepoScript,
+      }, {
+        path: 'script',
+        name: 'RepoScriptCreate',
+        component: RepoScriptCreate,
       }, {
         path: '',
         name: 'RepoDetail',

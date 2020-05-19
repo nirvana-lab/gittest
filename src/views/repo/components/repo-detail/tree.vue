@@ -20,11 +20,17 @@ export default {
       data: [],
     };
   },
+  methods: {
+    handleFetch() {
+      this.loading = true;
+      userService.getRepoTree(this.$route.params.id).then(({ data }) => {
+        this.loading = false;
+        this.data = data;
+      });
+    },
+  },
   beforeMount() {
-    userService.getRepoTree(this.$route.params.id).then(({ data }) => {
-      this.loading = false;
-      this.data = data;
-    });
+    this.handleFetch();
   },
 };
 </script>

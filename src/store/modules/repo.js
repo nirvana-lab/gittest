@@ -1,10 +1,12 @@
 import * as userService from '@/services/userService';
+import * as testService from '@/services/testService';
 
 const types = {
   SET_REPOS: 'SET_REPOS',
   SET_GIT_REPOS: 'SET_GIT_REPOS',
   SET_GIT_REPO: 'SET_GIT_REPO',
   SET_RAW: 'SET_RAW',
+  SET_SCRIPTS: 'SET_SCRIPTS',
 };
 
 // initState
@@ -13,6 +15,7 @@ const initState = {
   gitRepos: [],
   gitRepo: {},
   raw: '',
+  scripts: [],
 };
 
 // mutations
@@ -28,6 +31,9 @@ const mutations = {
   },
   [types.SET_RAW](state, data) {
     state.raw = data;
+  },
+  [types.SET_SCRIPTS](state, data) {
+    state.scripts = data;
   },
 };
 
@@ -51,6 +57,9 @@ const actions = {
         commit(types.SET_RAW, data);
       });
   },
+  GET_SCRIPTS: ({ commit }, params) => testService.getScripts(params).then(({ data }) => {
+    commit(types.SET_SCRIPTS, data.data);
+  }),
 };
 // getters
 const getters = {
