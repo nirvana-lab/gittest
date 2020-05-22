@@ -1,6 +1,6 @@
 <template>
   <div class="repo-tab">
-    <VueGroup v-if="$route.query.file" v-model="choice" class="mb-10 round" @update="handleChange">
+    <VueGroup v-if="$route.query.file" :value="choice" class="mb-10 round" @update="handleChange">
       <VueGroupButton value="RepoDoc" class="round">Swagger</VueGroupButton>
       <!-- <VueGroupButton value="RepoTask" class="round">Tasks</VueGroupButton> -->
       <!-- <VueGroupButton value="RepoScript" class="round">Scripts</VueGroupButton> -->
@@ -14,8 +14,10 @@ export default {
   name: 'Tab',
   data() {
     return {
-      choice: this.$route.name,
     };
+  },
+  computed: {
+    choice() { return this.$route.name; },
   },
   methods: {
     handleChange(value) {

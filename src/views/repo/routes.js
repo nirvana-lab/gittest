@@ -3,6 +3,7 @@ import RepoList from '@/views/repo/views/repo-list.vue';
 import RepoDetail from '@/views/repo/views/repo-detail.vue';
 import RepoSwagger from '@/views/repo/views/repo-swagger.vue';
 import RepoTask from '@/views/repo/views/repo-task.vue';
+import RepoTaskCreate from '@/views/repo/views/repo-task-create.vue';
 import RepoVariable from '@/views/repo/views/repo-variable.vue';
 import RepoTest from '@/views/repo/views/repo-test.vue';
 import RepoTestCreate from '@/views/repo/views/repo-test-create.vue';
@@ -42,31 +43,36 @@ export default {
     {
       path: ':id',
       component: RepoDetail,
-      children: [{
-        path: 'tasks',
-        name: 'RepoTask',
-        component: RepoTask,
-      }, {
-        path: 'doc',
-        name: 'RepoDoc',
-        component: RepoSwagger,
-      }, {
-        path: 'variable',
-        name: 'RepoVariable',
-        component: RepoVariable,
-      }, {
-        path: 'script/:script',
-        name: 'RepoScript',
-        component: RepoScript,
-      }, {
-        path: 'script',
-        name: 'RepoScriptCreate',
-        component: RepoScriptCreate,
-      }, {
-        path: '',
-        name: 'RepoDetail',
-        redirect: { name: 'RepoDoc' },
-      }],
+      children: [
+        {
+          path: 'task/:task',
+          name: 'RepoTask',
+          component: RepoTask,
+        }, {
+          path: 'task',
+          name: 'RepoTaskCreate',
+          component: RepoTaskCreate,
+        }, {
+          path: 'doc',
+          name: 'RepoDoc',
+          component: RepoSwagger,
+        }, {
+          path: 'variable',
+          name: 'RepoVariable',
+          component: RepoVariable,
+        }, {
+          path: 'script/:script',
+          name: 'RepoScript',
+          component: RepoScript,
+        }, {
+          path: 'script',
+          name: 'RepoScriptCreate',
+          component: RepoScriptCreate,
+        }, {
+          path: '',
+          name: 'RepoDetail',
+          redirect: { name: 'RepoDoc' },
+        }],
     },
     {
       path: '',

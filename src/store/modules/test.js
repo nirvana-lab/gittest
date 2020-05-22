@@ -2,7 +2,6 @@ import * as testService from '@/services/testService';
 
 const types = {
   SET_TESTS: 'SET_TESTS',
-  SET_TEST_ID: 'SET_TEST_ID',
 };
 
 // initState

@@ -45,6 +45,9 @@ export default {
   mounted() {
     this.handleFetch();
   },
+  beforeDestroy() {
+    this.$store.dispatch('variable/CLEAR_ENV');
+  },
   watch: {
     $route() {
       this.handleFetch();

@@ -53,12 +53,12 @@
       </tbody>
     </nv-table>
     <pre v-if="error.length" class="result-cmd">{{ error }}</pre>
-    <pre v-if="run.console.length" class="result-cmd" style="max-height: 500px">{{ run.console }}</pre>
     <div v-for="detail in run.details" :key="detail['HRUN-Request-ID']">
       <h5 class="mb-10 title">HRUN-Request-ID: {{ detail["HRUN-Request-ID"] }}</h5>
       <div v-for="(record, index) in detail.records" :key="index">
         <div class="record_status">
           <vue-button iconLeft="assignment" class="round white mr-10" @click="logDialog = true">log</vue-button>
+          <vue-button iconLeft="assignment" class="round white mr-10" @click="consoleDialog = true">console</vue-button>
           <vue-button
             :iconLeft="record.status === 'success' ? 'check_circle' : 'cancel'"
             class="flat round"
@@ -112,6 +112,11 @@
         <pre class="result-cmd">{{ run }}</pre>
       </div>
     </VueModal>
+    <VueModal v-if="consoleDialog" title="Log" @close="consoleDialog = false">
+      <div class="default-body">
+        <pre class="result-cmd">{{ run.console }}</pre>
+      </div>
+    </VueModal>
   </div>
 </template>
 <script>
@@ -124,6 +129,7 @@ export default {
       loadingEnv: true,
       run: { console: '', details: [] },
       logDialog: false,
+      consoleDialog: false,
       error: '',
     };
   },

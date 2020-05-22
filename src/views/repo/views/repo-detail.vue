@@ -3,10 +3,12 @@
     <div class="repo-detail-left">
       <RepoInfo/>
       <RepoTab :value="mode" @update="hanleChangeMode">
-        <VueButton v-if="mode === 'scripts'" class="round ml-10" @click="handleCreateScript" label="Create" iconLeft="add_circle"/>
+        <VueButton v-if="mode === 'scripts'" class="icon-button flat round ml-10 r" @click="handleCreateScript" iconLeft="add_circle"/>
+        <VueButton v-if="mode === 'tasks'" class="icon-button flat round ml-10 r" @click="handleCreateTask" iconLeft="add_circle"/>
       </RepoTab>
       <RepoTree v-if="mode === 'projects'"/>
       <RepoScript v-if="mode === 'scripts'"/>
+      <RepoTask v-if="mode === 'tasks'"/>
     </div>
     <div class="repo-detail-right">
       <ProjectTab v-if="$route.name === 'RepoDoc' || $route.name === 'RepoVariable'"/>
@@ -19,23 +21,34 @@
 import RepoTab from '../components/repo-detail/repo-tab.vue';
 import ProjectTab from '../components/repo-detail/tab.vue';
 import RepoScript from '../components/repo-detail/script.vue';
+import RepoTask from '../components/repo-detail/repo-task.vue';
 import RepoTree from '../components/repo-detail/tree.vue';
 import RepoInfo from '../components/repo-detail/info.vue';
 
 export default {
   name: 'RepoDetail',
   components: {
-    RepoTab, RepoTree, RepoInfo, ProjectTab, RepoScript,
+    RepoTab, RepoTree, RepoInfo, ProjectTab, RepoScript, RepoTask,
   },
   data() {
     return {
-      mode: this.$route.name === 'RepoDoc' ? 'projects' : 'scripts',
+      mode: '',
+      map: {
+        RepoDoc: 'projects',
+        RepoVariable: 'projects',
+        RepoScript: 'scripts',
+        RepoScriptCreate: 'scripts',
+        RepoTask: 'tasks',
+      },
       loading: true,
     };
   },
   methods: {
     handleCreateScript() {
       this.$router.push({ name: 'RepoScriptCreate', params: { id: this.$route.params.id }, query: this.$route.query });
+    },
+    handleCreateTask() {
+      this.$router.push({ name: 'RepoTaskCreate', params: { id: this.$route.params.id }, query: this.$route.query });
     },
     hanleChangeMode(value) {
       this.mode = value;
@@ -44,17 +57,24 @@ export default {
           this.$router.push({ name: 'RepoDoc' });
           return;
         }
-        this.$router.push({ name: 'RepoDoc', params: this.$route.params, query: this.$route.query });
-      } else {
+        this.$router.push({ name: 'RepoDoc', params: { id: this.$route.params.id }, query: this.$route.query });
+      } else if (value === 'scripts') {
         if (!this.$route.params.script) {
           this.$router.push({ name: 'RepoScriptCreate', params: { id: this.$route.params.id }, query: this.$route.query });
           return;
         }
-        this.$router.push({ name: 'RepoScript', params: this.$route.params, query: this.$route.query });
+        this.$router.push({ name: 'RepoScript', params: { id: this.$route.params.id }, query: this.$route.query });
+      } else if (value === 'tasks') {
+        if (!this.$route.params.task) {
+          this.$router.push({ name: 'RepoTaskCreate', params: { id: this.$route.params.id }, query: this.$route.query });
+          return;
+        }
+        this.$router.push({ name: 'RepoTask', params: { id: this.$route.params.id }, query: this.$route.query });
       }
     },
   },
   async mounted() {
+    this.mode = this.map[this.$route.name];
     await this.$store.dispatch('repo/GET_GIT_REPO', this.$route.params.id);
     this.loading = false;
   },
@@ -67,7 +87,7 @@ export default {
   min-height: 1px;
 }
 .repo-detail-left{
-  width: 315px;
+  width: 350px;
   display: flex;
   overflow: auto;
   flex-shrink: 0;
