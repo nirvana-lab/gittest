@@ -80,8 +80,7 @@ export default {
       }
     },
     handleRun() {
-      const { task } = this.$route.params;
-      taskService.runTask(task);
+      this.$router.push({ name: 'RepoTaskLog', params: this.$route.params, query: this.$route.query });
     },
     handleDelete() {
       taskService.deleteTask(this.$route.params.task).then(() => {

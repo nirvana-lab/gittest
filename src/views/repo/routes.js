@@ -3,6 +3,7 @@ import RepoList from '@/views/repo/views/repo-list.vue';
 import RepoDetail from '@/views/repo/views/repo-detail.vue';
 import RepoTask from '@/views/repo/views/repo-task.vue';
 import RepoTaskCreate from '@/views/repo/views/repo-task-create.vue';
+import RepoTaskLog from '@/views/repo/views/repo-task-log.vue';
 import RepoScript from '@/views/repo/views/repo-script.vue';
 import RepoScriptCreate from '@/views/repo/views/repo-script-create.vue';
 
@@ -50,6 +51,10 @@ export default {
           path: 'task/:task',
           name: 'RepoTask',
           component: RepoTask,
+        }, {
+          path: 'task/:task/log',
+          name: 'RepoTaskLog',
+          component: RepoTaskLog,
         }, {
           path: 'task',
           name: 'RepoTaskCreate',

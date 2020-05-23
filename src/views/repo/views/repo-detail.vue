@@ -40,6 +40,7 @@ export default {
         RepoScriptCreate: 'scripts',
         RepoTask: 'tasks',
         RepoTaskCreate: 'tasks',
+        RepoTaskLog: 'tasks',
       },
       loading: true,
     };
