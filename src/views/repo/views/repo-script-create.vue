@@ -1,17 +1,18 @@
 <template>
   <div class="repo-script-create">
+    <div class="repo-test-tab clear mb-10">
+      <vue-button class="round black" @click="handleCreate">Confirm</vue-button>
+    </div>
     <div class="clear title mb-10">
       <nv-table>
         <col width="210px" />
         <col width="220px" />
         <col width="100%" />
-        <col width="90px" />
         <thead>
           <tr>
             <th>Title</th>
             <th>Script Name</th>
             <th>Description</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -24,9 +25,6 @@
             </td>
             <td>
               <vue-input type="text" v-model="description" class="db" />
-            </td>
-            <td>
-              <vue-button class="r round black" @click="handleCreate">Confirm</vue-button>
             </td>
           </tr>
         </tbody>
@@ -90,5 +88,16 @@ export default {
   .name {
     vertical-align: text-bottom;
   }
+}
+.repo-test-tab {
+  padding-bottom: 10px;
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-image-source: radial-gradient(
+    circle at 50% 3%,
+    rgba(193, 201, 209, 0.53),
+    rgba(255, 255, 255, 0.2)
+  );
+  border-image-slice: 1;
 }
 </style>

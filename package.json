@@ -7,7 +7,7 @@
     "build": "npm run build:client && npm run build:server",
     "lint": "vue-cli-service lint",
     "dev:client": "PROXY=http://localhost:3000 vue-cli-service serve",
-    "dev:server": "PORT=3000 GIT=https://gitlab.daocloud.io TEST=http://10.8.1.94:9090 DB_NAME=nirvana7 DB_USER=postgres DB_PASSWORD=password DB_HOST=10.10.130.100 DB_PORT=5432 nodemon -w ./server -e js,yaml server/server.js",
+    "dev:server": "PORT=3000 GIT=https://gitlab.daocloud.io TEST=http://10.10.130.100:9090 DB_NAME=nirvana7 DB_USER=postgres DB_PASSWORD=password DB_HOST=10.10.130.100 DB_PORT=5432 nodemon -w ./server -e js,yaml server/server.js",
     "build:client": "vue-cli-service build",
     "build:server": "webpack -p --config scripts/webpack.server.js --display errors-only"
   },

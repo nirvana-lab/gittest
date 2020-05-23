@@ -1,16 +1,18 @@
 import Vue from 'vue';
 import RepoList from '@/views/repo/views/repo-list.vue';
 import RepoDetail from '@/views/repo/views/repo-detail.vue';
-import RepoSwagger from '@/views/repo/views/repo-swagger.vue';
 import RepoTask from '@/views/repo/views/repo-task.vue';
 import RepoTaskCreate from '@/views/repo/views/repo-task-create.vue';
-import RepoVariable from '@/views/repo/views/repo-variable.vue';
-import RepoTest from '@/views/repo/views/repo-test.vue';
-import RepoTestCreate from '@/views/repo/views/repo-test-create.vue';
-import RepoTestEdit from '@/views/repo/views/repo-test-edit.vue';
-import RepoTestLog from '@/views/repo/views/repo-test-log.vue';
 import RepoScript from '@/views/repo/views/repo-script.vue';
 import RepoScriptCreate from '@/views/repo/views/repo-script-create.vue';
+
+import RepoSwagger from '@/views/project/views/repo-swagger.vue';
+import RepoVariable from '@/views/project/views/repo-variable.vue';
+import RepoTest from '@/views/project/views/repo-test.vue';
+import RepoTestCreate from '@/views/project/views/repo-test-create.vue';
+import RepoTestEdit from '@/views/project/views/repo-test-edit.vue';
+import RepoTestLog from '@/views/project/views/repo-test-log.vue';
+
 
 const index = Vue.extend({
   template: '<router-view/>',

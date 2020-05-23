@@ -30,4 +30,15 @@ RepoController.delete('/repo/:id', async (ctx) => {
     logger.error(err);
   }
 });
+
+RepoController.get('/task/:id', async (ctx) => {
+  try {
+    const data = await RepoService.getTaskRun(ctx);
+    ctx.body = data;
+  } catch (err) {
+    ctx.response.status = 500;
+    ctx.response.body = err;
+    logger.error(err);
+  }
+});
 module.exports = RepoController;

@@ -3,8 +3,8 @@
     <div class="repo-detail-left">
       <RepoInfo/>
       <RepoTab :value="mode" @update="hanleChangeMode">
-        <VueButton v-if="mode === 'scripts'" class="icon-button flat round ml-10 r" @click="handleCreateScript" iconLeft="add_circle"/>
-        <VueButton v-if="mode === 'tasks'" class="icon-button flat round ml-10 r" @click="handleCreateTask" iconLeft="add_circle"/>
+        <VueButton v-if="mode === 'scripts'" class="round r" @click="handleCreateScript" label="Create"/>
+        <VueButton v-if="mode === 'tasks'" class="round r" @click="handleCreateTask" label="Create"/>
       </RepoTab>
       <RepoTree v-if="mode === 'projects'"/>
       <RepoScript v-if="mode === 'scripts'"/>
@@ -39,6 +39,7 @@ export default {
         RepoScript: 'scripts',
         RepoScriptCreate: 'scripts',
         RepoTask: 'tasks',
+        RepoTaskCreate: 'tasks',
       },
       loading: true,
     };

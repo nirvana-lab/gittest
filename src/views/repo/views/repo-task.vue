@@ -1,21 +1,66 @@
 <template>
-  <vue-loading class="big pt-5" v-if="loading" />
-  <div class="repo-task" v-else>
-    <div class="repo-task-right">
-      <TaskDetail/>
+  <div class="repo-script">
+    <div class="repo-test-tab clear mb-10">
+      <vue-button class="round black mr-10" @click="handleUpdate">Save Task</vue-button>
+      <vue-button class="round mr-10" @click="handleRun">Run</vue-button>
+      <vue-button class="round r red flat" @click="deleteDialog = true">Delete</vue-button>
     </div>
+    <div class="clear title mb-10">
+      <nv-table>
+        <col width="220px" />
+        <col width="100%" />
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <vue-input type="text" v-model="data.suit" class="b db" />
+            </td>
+            <td>
+              <vue-input type="text" v-model="data.description" class="db" />
+            </td>
+          </tr>
+        </tbody>
+      </nv-table>
+      <TaskCases v-model="data.suit_content" :envMap="envMap" :caseMap="caseMap"/>
+    </div>
+    <VueModal v-if="deleteDialog" title="Delete Task" class="small" @close="deleteDialog = false">
+      <div class="default-body">
+        Do you want to delete this task?
+      </div>
+      <div slot="footer" class="actions">
+        <div class="space"></div>
+        <VueButton class="red round" @click="handleDelete" :loading="loadingDelete">Confirm</VueButton>
+        <VueButton class="flat round" @click="create = false" :disabled="loadingDelete">Cancel</VueButton>
+      </div>
+    </VueModal>
   </div>
 </template>
 
+
 <script>
-import TaskDetail from '../components/repo-task/task-detail.vue';
+import * as taskService from '@/services/taskService';
+import TaskCases from '../components/repo-task/task-cases.vue';
 
 export default {
   name: 'RepoVariable',
-  components: { TaskDetail },
+  components: { TaskCases },
   data() {
     return {
       loading: true,
+      deleteDialog: false,
+      caseMap: {},
+      envMap: {},
+      data: {
+        description: '',
+        suit: '',
+        id: 0,
+        suit_content: [],
+      },
     };
   },
   computed: {
@@ -26,50 +71,77 @@ export default {
   methods: {
     handleFetch() {
       this.loading = true;
-      const {
-        file, ref,
-      } = this.$route.query;
-      const { id } = this.$route.params;
-      if (file && id) {
-        const params = { project_id: id, file_path: file, ref: ref || this.repo.default_branch };
-        this.$store.dispatch('variable/GET_ENVS', params);
-        this.$store.dispatch('task/GET_ALL_TESTCASES', params);
-        this.$store.dispatch('task/GET_TASKS', params).then(() => {
+      const { task } = this.$route.params;
+      if (task) {
+        taskService.getTask(task).then(({ data }) => {
+          this.data = data.data;
           this.loading = false;
         });
       }
     },
+    handleRun() {
+      const { task } = this.$route.params;
+      taskService.runTask(task);
+    },
+    handleDelete() {
+      taskService.deleteTask(this.$route.params.task).then(() => {
+        this.$store.dispatch('task/GET_TASKS', this.$route.params.id);
+        this.$router.push({ name: 'RepoTaskCreate', params: { id: this.$route.params.id }, query: this.$route.query });
+      });
+    },
+    handleUpdate() {
+      taskService.updateTask(this.data, this.data.id).then(() => {
+        this.$store.dispatch('task/GET_TASKS', this.$route.params.id);
+      });
+    },
   },
-  mounted() {
-    // this.handleFetch();
+  async mounted() {
+    const { id } = this.$route.params;
+    Promise.all([taskService.getAllEnvs(id), taskService.getAllTestCases(id)]).then((res) => {
+      const { data } = res[1];
+      const env = res[0].data;
+      const caseMap = {};
+      const envMap = {};
+      data.data.forEach((p, index) => {
+        const temp = p.testcases;
+        envMap[p.id] = env.data[index].env;
+        Object.keys(temp).forEach((a) => temp[a].forEach((c) => {
+          const t = a.split('|');
+          caseMap[c.id] = {
+            name: c.case,
+            path: t[1],
+            method: t[0],
+            file_name: p.file_name,
+            file_path: p.file_path,
+            id: p.id,
+          };
+        }));
+      });
+      this.caseMap = caseMap;
+      this.envMap = envMap;
+      this.handleFetch();
+    });
   },
   watch: {
     $route() {
       this.handleFetch();
-      this.$store.dispatch('task/CLEAR_TASK');
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-.repo-task {
-  flex-grow: 1;
-  display: flex;
-  min-height: 1px;
+.repo-script{
+  padding-top: 15px;
 }
-.repo-task-left{
-  width: 200px;
-  display: flex;
-  overflow: auto;
-  flex-shrink: 0;
-  min-height: 1px;
-  flex-direction: column;
-}
-.repo-task-right{
-  flex-grow: 1;
-  width: 100%;
-  min-height: 1px;
-  overflow: auto;
-  padding: 0px 15px 10px;
+.repo-test-tab {
+  padding-bottom: 10px;
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  border-image-source: radial-gradient(
+    circle at 50% 3%,
+    rgba(193, 201, 209, 0.53),
+    rgba(255, 255, 255, 0.2)
+  );
+  border-image-slice: 1;
 }
 </style>

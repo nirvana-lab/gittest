@@ -1,103 +1,137 @@
 <template>
-  <VueModal title="TestCases" @close="$emit('update:show', false)">
-    <div class="body">
-      <VueSelect
-        v-model="path"
-          button-class="white small"
-          class="mr-5"
-          placeholder="Path"
-        >
-          <VueSelectButton v-for="i in Object.keys(casesMap)" :key="i" :value="i" :label="i" />
-        </VueSelect>
-        <VueSelect
-          v-model="method"
-          button-class="white small"
-          class="mr-5"
-          placeholder="Method"
-        >
-          <VueSelectButton v-for="i in Object.keys(methodsMap)" :key="i" :value="i" :label="i" />
-        </VueSelect>
-         <nv-table odd>
-          <col width="32px" />
-          <col width="100%" />
+  <div>
+    <div class="title">
+      <span class="name mr-5">CASES</span>
+      <vue-button
+        small
+        class="icon-button round purple flat"
+        iconLeft="add_circle"
+        @click="show = true"
+      />
+    </div>
+      <nv-table odd>
+      <col width="50px" />
+      <col width="70%" />
+      <col width="150px" />
+      <col width="100%" />
+      <col width="40" />
       <thead>
+        <tr>
+          <th></th>
+          <th>Case</th>
+          <th>Env</th>
+          <th>Path</th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
-        <tr v-for="(value, index) in cases" :key="index">
+        <tr v-for="(i, index) in value" :key="index">
+          <template  v-if="caseMap[i.exec_id]">
           <td>
+            <span class="method">{{caseMap[i.exec_id].method.toUpperCase()}}</span>
           </td>
           <td>
-            {{value}}
+             {{caseMap[i.exec_id].name}}
           </td>
+          <td>
+            <VueSelect
+              :value="i.env_id"
+              @update="e => handleUpdate(index, 'env_id', e)"
+              button-class="small white"
+              class="long"
+            >
+              <VueSelectButton :value="`${env.id}`" :label="env.env" v-for="env in envMap[caseMap[i.exec_id].id]" :key="env.id"/>
+            </VueSelect>
+          </td>
+          <td class="ell">
+            {{caseMap[i.exec_id].path}}
+          </td>
+          <td>
+            <vue-button
+              small
+              @click="handleDelete(index)"
+              class="icon-button round red flat"
+              iconLeft="remove_circle"
+            />
+          </td>
+          </template>
         </tr>
       </tbody>
     </nv-table>
-    </div>
-    <div slot="footer" class="actions">
-      <div class="space"></div>
-      <VueButton
-        class="red round"
-        @click="handleConfirm"
-        >Confirm</VueButton
-      >
-      <VueButton class="flat round" @click="$emit('update:show', false)">Cancel</VueButton>
-    </div>
-  </VueModal>
+    <Project v-if="show" :show.sync="show" @handleAdd="handleAdd" />
+  </div>
 </template>
-
 <script>
+import Project from './task-project.vue';
+
 export default {
-  name: 'EnvCaseDialog',
-  props: ['id'],
+  name: 'Cases',
+  components: { Project },
+  props: {
+    value: {
+      default: () => [],
+    },
+    caseMap: {
+      default: () => ({}),
+    },
+    envMap: {
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      path: '',
-      method: '',
+      show: false,
     };
   },
   methods: {
-    handleConfirm() {
-      this.$emit('update:show', false);
+    handleUpdate(index, key, value) {
+      const temp = [...this.value];
+      temp[index][key] = value;
+      this.$emit('input', temp);
     },
-  },
-  computed: {
-    casesMap() {
-      return this.$store.state.task.casesMap;
+    handleAdd(arr) {
+      const temp = [...this.value];
+      arr.forEach((i) => {
+        if (!temp.some((t) => t.exec_id === i)) {
+          temp.push({ exec_id: i, env_id: -1, suit_type: 'testcase' });
+        }
+      });
+      this.$emit('input', temp);
     },
-    methodsMap() {
-      return this.casesMap[this.path] || {};
+    handleDelete(index) {
+      const temp = [...this.value];
+      temp.splice(index, 1);
+      this.$emit('input', temp);
     },
-    repo() {
-      return this.$store.state.repo.gitRepo;
-    },
-    cases() {
-      if (!Object.keys(this.methodsMap).length) return [];
-      return this.methodsMap[this.method];
-    },
-  },
-  mounted() {
-    const {
-      file, ref,
-    } = this.$route.query;
-    const { id } = this.$route.params;
-    if (file && id) {
-      const params = { project_id: id, file_path: file, ref: ref || this.repo.default_branch };
-      this.$store.dispatch('task/GET_ALL_TESTCASES', params);
-    }
   },
 };
 </script>
 <style lang="scss" scoped>
 @import "@/assets/styles/colors.scss";
-.body{
-  padding: 0 24px;
+.method {
+  padding: 1px 5px;
+  background-color: #2d3444;
+  color: #fff;
+  border-radius: 3px;
+  font-size: 11px;
+  margin-right: 5px;
 }
 .title {
   font-size: 13px;
-  padding: 0 5px 5px;
+  padding: 5px;
   font-weight: 600;
+  border-style: solid;
+  border-width: 1px 0 0;
+  margin-top: 10px;
+  border-image-source: radial-gradient(
+    circle at 50% 3%,
+    rgba(193, 201, 209, 0.53),
+    rgba(255, 255, 255, 0.2)
+  );
+  border-image-slice: 1;
   .name {
     vertical-align: text-bottom;
   }
 }
+
 </style>

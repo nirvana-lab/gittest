@@ -31,7 +31,7 @@ export default {
     },
     handleFetch() {
       this.loading = true;
-      this.$store.dispatch('task/GET_TASKS', { project_id: this.$route.params.id }).then(() => {
+      this.$store.dispatch('task/GET_TASKS', this.$route.params.id).then(() => {
         this.loading = false;
       });
     },

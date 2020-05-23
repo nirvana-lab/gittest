@@ -32,7 +32,7 @@
       </nv-table>
     </div>
     <RepoScript v-model="data.content" />
-    <VueModal v-if="deleteDialog" title="Delete Test Cases" class="small" @close="deleteDialog = false">
+    <VueModal v-if="deleteDialog" title="Delete Script" class="small" @close="deleteDialog = false">
       <div class="default-body">
         Do you want to delete this script?
       </div>

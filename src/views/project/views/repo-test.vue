@@ -120,7 +120,7 @@ export default {
   min-height: 1px;
 }
 .repo-test-left{
-  width: 315px;
+  width: 350px;
   display: flex;
   overflow: auto;
   flex-shrink: 0;

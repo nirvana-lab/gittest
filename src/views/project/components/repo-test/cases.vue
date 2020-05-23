@@ -1,6 +1,6 @@
 <template>
   <div class="test-cases">
-    <vue-button class="r" @click="handleCreateCase" label="Create" />
+    <vue-button class="round r" @click="handleCreateCase" label="Create" />
     <vue-input
       placeholder="Search..."
       class="flat purple db mb-10"

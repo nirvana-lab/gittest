@@ -39,8 +39,15 @@ const deleteRepo = async (ctx) => {
   await Repo.destroy({ where: { user: user.id, repo: ctx.params.id } });
 };
 
+const getTaskRun = async (ctx) => {
+  const headers = { authorization: `Bearer ${ctx.cookies.get('token')}` };
+  const { data } = await axios.get(`${process.env.TEST}/api/testsuits/${ctx.params.id}/run`, { headers });
+  return data;
+};
+
 module.exports = {
   getRepos,
   postRepo,
   deleteRepo,
+  getTaskRun,
 };

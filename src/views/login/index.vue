@@ -1,11 +1,10 @@
 <template>
   <div class="login">
+    <header class="login-header">Nirvana</header>
     <svg class='logo'>
       <use xlink:href="#icon-logo"></use>
     </svg>
-    <header class="login-header">Nirvana</header>
-    <div class="mb-30">
-    </div>
+    <div class="mb-30"></div>
     <div class="login-content">
       <vue-button class="black round" @click="handleLogin">Get Gitlab Authority</vue-button>
     </div>
@@ -54,9 +53,9 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(36, 46, 66, 0.06);
 }
 .login-header {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu;
 }
 .logo{
