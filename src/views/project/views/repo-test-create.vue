@@ -21,6 +21,7 @@
         </tbody>
       </nv-table>
     </div>
+    <Setup v-model="setup" />
     <Params v-model="parameters" />
     <Request v-model="body"/>
     <Response v-model="response"/>
@@ -32,10 +33,13 @@ import content from '@/utils/content';
 import Params from '../components/repo-test/params.vue';
 import Request from '../components/repo-test/request.vue';
 import Response from '../components/repo-test/response.vue';
+import Setup from '../components/repo-test/setup.vue';
 
 export default {
   name: 'TestCreate',
-  components: { Request, Response, Params },
+  components: {
+    Request, Response, Params, Setup,
+  },
   props: ['paths'],
   data() {
     return {
@@ -43,6 +47,8 @@ export default {
       name: '',
       parameters: [],
       body: '',
+      setup: [],
+      teardown: [],
       response: [
         {
           comparator: 'equal', expect_value: '200', key: 'status_code', key_type: 'integer',
@@ -54,6 +60,7 @@ export default {
   },
   mounted() {
     this.handleInit();
+    testService.getTestSuits(this.$route.params.id);
   },
   methods: {
     handleInit() {
@@ -101,8 +108,8 @@ export default {
         data: {
           case: this.name,
           description: this.description,
-          setup: [],
-          teardown: [],
+          setup: this.setup,
+          teardown: this.teardown,
           parameters: resultParameters,
           body: this.body,
           validator: resultResponse,
