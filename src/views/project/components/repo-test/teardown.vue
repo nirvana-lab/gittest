@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <span class="name mr-5">SETUP</span>
+      <span class="name mr-5">TEARDOWN</span>
        <vue-button
         small
         class="icon-button round purple flat"

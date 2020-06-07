@@ -21,9 +21,11 @@
           </tr>
         </tbody>
       </nv-table>
+      <Setup v-model="setup" />
       <Params v-model="parameters" />
       <Request v-model="body" />
       <Response v-model="response" />
+    <Teardown v-model="teardown" />
     </template>
     <VueModal v-if="deleteDialog" title="Delete Test Cases" class="small" @close="deleteDialog = false">
       <div class="default-body">
@@ -42,10 +44,14 @@ import * as testService from '@/services/testService';
 import Params from '../components/repo-test/params.vue';
 import Request from '../components/repo-test/request.vue';
 import Response from '../components/repo-test/response.vue';
+import Setup from '../components/repo-test/setup.vue';
+import Teardown from '../components/repo-test/teardown.vue';
 
 export default {
   name: 'TestEdit',
-  components: { Request, Response, Params },
+  components: {
+    Request, Response, Params, Setup, Teardown,
+  },
   props: ['testCase'],
   data() {
     return {
@@ -59,6 +65,8 @@ export default {
       parameters: [],
       body: '',
       response: [],
+      setup: [],
+      teardown: [],
     };
   },
   watch: {
@@ -114,12 +122,16 @@ export default {
           this.body = data.content.body || '';
           this.response = data.content.validator || [];
           this.parameters = data.content.parameters || [];
+          this.setup = data.content.setup || [];
+          this.teardown = data.content.teardown || [];
           this.loading = false;
           this.copy = {
             description: data.content.description || '',
             name: data.content.case || '',
             body: data.content.body || '',
             response: JSON.stringify(data.content.validator || []),
+            teardown: JSON.stringify(data.content.teardown || []),
+            setup: JSON.stringify(data.content.setup || []),
             parameters: JSON.stringify(data.content.parameters || []),
           };
         })

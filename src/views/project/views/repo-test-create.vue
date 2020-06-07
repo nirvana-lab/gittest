@@ -25,6 +25,7 @@
     <Params v-model="parameters" />
     <Request v-model="body"/>
     <Response v-model="response"/>
+    <Teardown v-model="teardown" />
   </div>
 </template>
 <script>
@@ -34,11 +35,12 @@ import Params from '../components/repo-test/params.vue';
 import Request from '../components/repo-test/request.vue';
 import Response from '../components/repo-test/response.vue';
 import Setup from '../components/repo-test/setup.vue';
+import Teardown from '../components/repo-test/teardown.vue';
 
 export default {
   name: 'TestCreate',
   components: {
-    Request, Response, Params, Setup,
+    Request, Response, Params, Setup, Teardown,
   },
   props: ['paths'],
   data() {
@@ -60,7 +62,6 @@ export default {
   },
   mounted() {
     this.handleInit();
-    testService.getTestSuits(this.$route.params.id);
   },
   methods: {
     handleInit() {

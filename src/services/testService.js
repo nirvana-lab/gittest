@@ -37,4 +37,4 @@ export const deleteScript = (id) => axios.delete(`/api/nv/scripts/${id}`);
 export const updateScript = ({ id, data }) => axios.put(`/api/nv/scripts/${id}`, data);
 
 
-export const getTestSuits = (id) => axios.get('/api/nv/testsuits', { params: { project_id: id } });
+export const getScriptsSelect = (id) => axios.get('/api/nv/scripts/select', { params: { project_id: id } });
