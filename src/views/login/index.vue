@@ -31,7 +31,7 @@ export default {
   methods: {
     handleLogin() {
       axios.get('/api/sso').then(({ data }) => {
-        if (data.url) window.open(data.url, '_self');
+        if (data) window.open(data, '_self');
       });
     },
   },

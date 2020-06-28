@@ -34,7 +34,7 @@
           :class="{'active': repo.id === choose}"
           @click="choose = repo.id"
           :key="repo.id"
-        >{{repo.path_with_namespace}}</div>
+        >{{repo.path_with_namespace || repo.full_name}}</div>
       </div>
       <div slot="footer" class="actions">
         <NvPage :total="total" @changePage="page" :currentPage="currentPage" :currentSize="20" />
@@ -108,8 +108,8 @@ export default {
       await this.$store
         .dispatch('repo/GET_GIT_REPOS', this.currentPage)
         .then((res) => {
-          this.total = res.headers['x-total']
-            ? parseInt(res.headers['x-total'], 10)
+          this.total = res
+            ? parseInt(res, 10)
             : 0;
         });
     },

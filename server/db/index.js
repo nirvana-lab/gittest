@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const { logger } = require('../middlewares/logger');
 
-
 const db = {
   name: process.env.DB_NAME,
   user: process.env.DB_USER,
