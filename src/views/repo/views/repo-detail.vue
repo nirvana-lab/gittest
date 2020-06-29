@@ -77,7 +77,7 @@ export default {
   },
   async mounted() {
     this.mode = this.map[this.$route.name];
-    await this.$store.dispatch('repo/GET_GIT_REPO', this.$route.params.id);
+    await this.$store.dispatch('repo/GET_GIT_REPO', encodeURIComponent(this.$route.params.id));
     this.loading = false;
   },
 };

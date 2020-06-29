@@ -28,7 +28,7 @@ export default {
       const { id } = this.$route.params;
       if (file && id) {
         await this.$store.dispatch('repo/GET_FILE', {
-          id,
+          id: encodeURIComponent(id),
           path: encodeURIComponent(file),
           ref: ref || this.repo.default_branch,
         });

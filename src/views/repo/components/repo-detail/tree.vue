@@ -23,7 +23,7 @@ export default {
   methods: {
     handleFetch() {
       this.loading = true;
-      userService.getRepoTree(this.$route.params.id).then(({ data }) => {
+      userService.getRepoTree(encodeURIComponent(this.$route.params.id)).then(({ data }) => {
         this.loading = false;
         this.data = data;
       });

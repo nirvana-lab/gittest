@@ -12,12 +12,16 @@ const getGitlabRepo = (token, id, host) => axios.get(url.format({
   headers: { authorization: `Bearer ${token}` },
 });
 
-const getGithubRepo = (token, id, host) => axios.get(url.format({
-  host,
-  pathname: `/api/v4/projects/${id}`,
-}), {
-  headers: { authorization: `Bearer ${token}` },
-});
+const getGithubRepo = (token, id, gitHost) => {
+  const { protocol, host } = url.parse(gitHost);
+  return axios.get(url.format({
+    protocol,
+    host: `api.${host}`,
+    pathname: `/repos/${decodeURIComponent(id)}`,
+  }), {
+    headers: { authorization: `Bearer ${token}` },
+  }).then(({ data: repo }) => ({ data: { ...repo, id: encodeURIComponent(repo.full_name), _id: repo.id } }));
+};
 
 const getRepos = async (ctx) => {
   const token = ctx.cookies.get('token');

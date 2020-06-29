@@ -1,10 +1,10 @@
 <template>
   <div>
     <div :style="`padding-left: ${deep * 10}px`" class="repo-tree-item ell" :class="{'active': $route.query.file === item.path}" @click="handleClick(item)">
-      <vue-icon :icon="item.type === 'tree' ? (open ? 'expand_more' : 'chevron_right') : ''" />
+      <vue-icon :icon="(item.type === 'tree' || item.type === 'dir') ? (open ? 'expand_more' : 'chevron_right') : ''" />
       <vue-icon
         class="mr-5"
-        :icon="item.type === 'tree' ? (open ? 'folder_open' : 'folder') : 'description'"
+        :icon="(item.type === 'tree' || item.type === 'dir') ? (open ? 'folder_open' : 'folder') : 'description'"
       />{{ item.name }}
     </div>
     <template v-if="open">
@@ -39,10 +39,10 @@ export default {
     if (this.$route.query.file) {
       const filePath = this.$route.query.file.split('/');
       const name = filePath.splice(0, this.deep + 1).join('/');
-      if (this.item.type === 'tree' && this.item.path === name) {
+      if ((this.item.type === 'tree' || this.item.type === 'dir') && this.item.path === name) {
         this.open = !this.open;
         this.loading = true;
-        userService.getRepoTreePath(this.$route.params.id, name).then(({ data }) => {
+        userService.getRepoTreePath(encodeURIComponent(this.$route.params.id), name).then(({ data }) => {
           this.data = data;
           this.loading = false;
         });
@@ -51,10 +51,10 @@ export default {
   },
   methods: {
     handleClick(i) {
-      if (i.type === 'tree') {
+      if (i.type === 'tree' || i.type === 'dir') {
         this.open = !this.open;
         this.loading = true;
-        userService.getRepoTreePath(this.$route.params.id, i.path).then(({ data }) => {
+        userService.getRepoTreePath(encodeURIComponent(this.$route.params.id), i.path).then(({ data }) => {
           this.data = data;
           this.loading = false;
         });

@@ -19,8 +19,8 @@
           />
           <vue-avatar v-else class="mr-10" :src="repo.avatar_url || gitlab" />
           <vue-tag>
-            <vue-tag-item>{{ repo.namespace.name }}</vue-tag-item>
-            <vue-tag-item class="detail">
+            <vue-tag-item>{{ repo.namespace? repo.namespace.name: repo.full_name}}</vue-tag-item>
+            <vue-tag-item class="detail" v-if="repo.visibility">
               {{ repo.visibility }}
             </vue-tag-item>
           </vue-tag>
